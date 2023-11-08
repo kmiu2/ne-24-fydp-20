@@ -16,9 +16,13 @@ conda install -c conda-forge pybamm
 conda activate fydp
 ```
 
+## Version
+
+Uses PyBaMM version 23.5
+
 ## Links
 
-- Link to the [PyBaMM Documentation](https://docs.pybamm.org/en/latest/index.html).
+- Link to the [PyBaMM Documentation](https://docs.pybamm.org/en/stable/index.html).
 - Link to [video tutorials](https://pybamm.org/learn/).
 
 ## Troubleshooting

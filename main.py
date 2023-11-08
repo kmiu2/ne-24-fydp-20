@@ -1,31 +1,17 @@
 import pybamm
-from sympy import solve
+from parameters import mohtat2020
 
 pybamm.set_logging_level("NOTICE")
 
-# List of Chemistries
-# https://docs.pybamm.org/en/latest/source/api/parameters/parameter_sets.html#parameter-sets
-# ['Ai2020', 'Chen2020', 'Chen2020_composite', 'ECM_Example', 'Ecker2015', 'Marquis2019', 'Mohtat2020',
-# 'NCA_Kim2011', 'OKane2022', 'ORegan2022', 'Prada2013', 'Ramadass2004', 'Sulzer2019', 'Xu2019']
 
-
-def quick_simulation():
-    print("Running quick simulation")
-    model = pybamm.lithium_ion.DFN()
-    sim = pybamm.Simulation(model)
-    sim.solve([0, 60])
-    sim.plot()
-
-
-# From: https://docs.pybamm.org/en/latest/source/examples/notebooks/getting_started/tutorial-5-run-experiments.html
-# See also: https://youtu.be/2SrfbpVnXwI
 def cycle_test():
-    print("Running cycle test")
+    print("*** Running cycle test ***")
 
     # Parameter values
-    num_of_cycles = 100
+    num_of_cycles = 1000
+    cut_off_percent = 80
     parameter_values = pybamm.ParameterValues("Mohtat2020")
-    parameter_values.update({"SEI kinetic rate constant [m.s-1]": 1e-14})
+    parameter_values.update(mohtat2020)
 
     # Set up experiment
     experiment = pybamm.Experiment(
@@ -38,26 +24,35 @@ def cycle_test():
             ),
         ]
         * num_of_cycles,
-        termination="80% capacity",
+        termination=f"{cut_off_percent}% capacity",
     )
 
     # Model and simulation
-    model = pybamm.lithium_ion.SPM({"SEI": "ec reaction limited"})
-
+    model_options = {"SEI": "ec reaction limited"}
+    model = pybamm.lithium_ion.SPM(model_options)
     sim = pybamm.Simulation(
         model, experiment=experiment, parameter_values=parameter_values
     )
     sim.solve()
-    sol = sim.solution
 
     # Plot
-    sol.plot(
+    sim.plot(
         [
-            "Negative electrode stoichiometry",
-            "Positive electrode stoichiometry",
-            "Total lithium in particles [mol]",
-            "Loss of lithium due to loss of active material in negative electrode [mol]",
-            "X-averaged inner SEI thickness [m]",
+            "Current [A]",
+            "Total current density [A.m-2]",
+            "Voltage [V]",
+            "Discharge capacity [A.h]",
+            "Electrolyte potential [V]",
+            "Electrolyte concentration [mol.m-3]",
+            "Total SEI thickness [m]",
+            "Negative electrode porosity",
+            "X-averaged negative electrode porosity",
+            "X-averaged negative electrode SEI interfacial current density [A.m-2]",
+            "X-averaged total SEI thickness [m]",
+            [
+                "Total lithium lost [mol]",
+                "Loss of lithium to SEI [mol]",
+            ],
         ]
     )
 
