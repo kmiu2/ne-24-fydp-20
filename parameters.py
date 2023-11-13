@@ -32,7 +32,7 @@ mohtat2020 = {
     "Lithium interstitial reference concentration [mol.m-3]": 15.0,
     "Lithium metal partial molar volume [m3.mol-1]": 1.3e-05,
     "Lithium plating transfer coefficient": 0.7,
-    "Lower voltage cut-off [V]": 2.8,
+    "Lower voltage cut-off [V]": 0.5,
     "Maximum concentration in negative electrode [mol.m-3]": 28746.0,
     "Maximum concentration in positive electrode [mol.m-3]": 35380.0,
     "Negative current collector conductivity [S.m-1]": 59600000.0,

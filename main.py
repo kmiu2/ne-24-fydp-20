@@ -8,8 +8,8 @@ def cycle_test():
     print("*** Running cycle test ***")
 
     # Parameter values
-    num_of_cycles = 1000
-    cut_off_percent = 80
+    num_of_cycles = 150
+    cut_off_percent = 99.9
     parameter_values = pybamm.ParameterValues("Mohtat2020")
     parameter_values.update(mohtat2020)
 
@@ -17,9 +17,9 @@ def cycle_test():
     experiment = pybamm.Experiment(
         [
             (
-                "Charge at 1C until 4.2V",
-                "Hold at 4.2V until C/50",
-                "Discharge at 1C until 3V",
+                "Charge at 1C until 2.8V",
+                "Hold at 2.8V until C/50",
+                "Discharge at 1C until 0.5V",
                 "Rest for 1 hour",
             ),
         ]
@@ -42,17 +42,6 @@ def cycle_test():
             "Total current density [A.m-2]",
             "Voltage [V]",
             "Discharge capacity [A.h]",
-            "Electrolyte potential [V]",
-            "Electrolyte concentration [mol.m-3]",
-            "Total SEI thickness [m]",
-            "Negative electrode porosity",
-            "X-averaged negative electrode porosity",
-            "X-averaged negative electrode SEI interfacial current density [A.m-2]",
-            "X-averaged total SEI thickness [m]",
-            [
-                "Total lithium lost [mol]",
-                "Loss of lithium to SEI [mol]",
-            ],
         ]
     )
 
