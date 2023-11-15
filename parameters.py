@@ -35,7 +35,7 @@ mohtat2020 = {
     "Lower voltage cut-off [V]": 0.5,
     "Maximum concentration in negative electrode [mol.m-3]": 28746.0,
     "Maximum concentration in positive electrode [mol.m-3]": 35380.0,
-    "Negative current collector conductivity [S.m-1]": 59600000.0,
+    "Negative current collector conductivity [S.m-1]": 59600000.0,  # Cu foil
     "Negative current collector density [kg.m-3]": 8954.0,
     "Negative current collector specific heat capacity [J.kg-1.K-1]": 385.0,
     "Negative current collector surface heat transfer coefficient [W.m-2.K-1]": 0.0,
@@ -63,7 +63,7 @@ mohtat2020 = {
     "Outer SEI open-circuit potential [V]": 0.8,
     "Outer SEI partial molar volume [m3.mol-1]": 9.585e-05,
     "Outer SEI solvent diffusivity [m2.s-1]": 2.5000000000000002e-22,
-    "Positive current collector conductivity [S.m-1]": 35500000.0,
+    "Positive current collector conductivity [S.m-1]": 35500000.0,  # Al foil
     "Positive current collector density [kg.m-3]": 2707.0,
     "Positive current collector specific heat capacity [J.kg-1.K-1]": 897.0,
     "Positive current collector surface heat transfer coefficient [W.m-2.K-1]": 0.0,
@@ -92,16 +92,16 @@ mohtat2020 = {
     "SEI open-circuit potential [V]": 0.4,
     "SEI reaction exchange current density [A.m-2]": 1.5e-07,
     "SEI resistivity [Ohm.m]": 200000.0,
-    "Separator Bruggeman coefficient (electrolyte)": 1.5,
-    "Separator density [kg.m-3]": 397.0,
-    "Separator porosity": 0.4,
+    "Separator Bruggeman coefficient (electrolyte)": 1.5,  # Usually 1.5 for porous media
+    "Separator density [kg.m-3]": 397.0,  # Not sure about this one
+    "Separator porosity": 0.39,
     "Separator specific heat capacity [J.kg-1.K-1]": 700.0,
     "Separator thermal conductivity [W.m-1.K-1]": 0.16,
-    "Separator thickness [m]": 1.2e-05,
+    "Separator thickness [m]": 25e-6,
     "Separator transport efficiency ": 0.25,
     "Thermodynamic factor": 1.0,
     "Total heat transfer coefficient [W.m-2.K-1]": 5.0,
-    "Typical lithium ion diffusivity [m2.s-1]": 5.34e-10,
+    "Typical lithium ion diffusivity [m2.s-1]": 5.34e-10,  # Within the range of 10^-10 to 10^-12 (For both Li and Na)
     "Typical plated lithium concentration [mol.m-3]": 1000.0,
     "Upper voltage cut-off [V]": 4.2,
 }
