@@ -9,7 +9,7 @@ mohtat2020 = {
     "Contact resistance [Ohm]": 0,
     "Current function [A]": 5.0,
     "EC diffusivity [m2.s-1]": 2e-18,
-    "EC initial concentration in electrolyte [mol.m-3]": 0,
+    "EC initial concentration in electrolyte [mol.m-3]": 4541.0,
     "Edge heat transfer coefficient [W.m-2.K-1]": 5.0,
     "Electrode height [m]": 0.127,
     "Electrode width [m]": 0.0508,
