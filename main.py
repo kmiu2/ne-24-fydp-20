@@ -54,6 +54,20 @@ def cycle_test():
         ]
     )
 
+    ## Calculations
+    sol = sim.solution
+
+    # Capacity calculation
+    print("----------------------")
+    initial_capacity = sol["Total lithium capacity [A.h]"].entries[0]
+    final_capacity = sol["Total lithium capacity [A.h]"].entries[-1]
+    percent_capacity_loss = (initial_capacity - final_capacity) / initial_capacity * 100
+    print(f"Capacity loss: {percent_capacity_loss}%")
+
+    # Extrapolate to 80% capacity (capacity loss is currently 0.33%)
+    cycles_to_80_percent = 20 / (percent_capacity_loss / 100) * num_of_cycles
+    print("Cycles to 80% capacity:", cycles_to_80_percent)
+
 
 # Run the simulations
 cycle_test()
