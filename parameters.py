@@ -5,7 +5,7 @@ mohtat2020 = {
     "Bulk solvent concentration [mol.m-3]": 7035.0,
     "Cation transference number": 0.38,
     "Cell cooling surface area [m2]": 0.0129,
-    "Cell volume [m3]": 1.6387e-5,
+    "Cell volume [m3]": 0.6387e-5,
     "Contact resistance [Ohm]": 0,
     "Current function [A]": 5.0,
     "EC diffusivity [m2.s-1]": 2e-18,
