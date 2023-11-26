@@ -10,8 +10,8 @@ def cycle_test():
     print("*** Running cycle test ***")
 
     # Parameter values
-    num_of_cycles = 1000
-    cut_off_percent = 80
+    num_of_cycles = 2000
+    cut_off_percent = 85
     parameter_values = pybamm.ParameterValues("Mohtat2020")
     parameter_values.update(mohtat2020)
 
@@ -19,10 +19,10 @@ def cycle_test():
     experiment = pybamm.Experiment(
         [
             (
-                "Discharge at 1C until 1.75V",
+                "Discharge at C/6 until 3.5V",
                 "Rest for 1 hour",
-                "Charge at 1C until 2.8V",
-                "Hold at 2.8V until C/50",
+                "Charge at 2C until 3.8V",
+                "Hold at 3.8V until C/50",
             ),
         ]
         * num_of_cycles,
