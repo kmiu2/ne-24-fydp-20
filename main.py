@@ -1,4 +1,5 @@
 from matplotlib import pyplot as plt
+from scipy.integrate import simps
 import numpy as np
 import pybamm
 from parameters import mohtat2020
@@ -9,8 +10,10 @@ pybamm.set_logging_level("NOTICE")
 def cycle_test():
     print("*** Running cycle test ***")
 
+    ## Simulation
     # Parameter values
-    num_of_cycles = 2000
+    # num_of_cycles = 2000
+    num_of_cycles = 1
     cut_off_percent = 85
     parameter_values = pybamm.ParameterValues("Mohtat2020")
     parameter_values.update(mohtat2020)
@@ -57,16 +60,14 @@ def cycle_test():
     ## Calculations
     sol = sim.solution
 
-    # Capacity calculation
-    print("----------------------")
-    initial_capacity = sol["Total lithium capacity [A.h]"].entries[0]
-    final_capacity = sol["Total lithium capacity [A.h]"].entries[-1]
-    percent_capacity_loss = (initial_capacity - final_capacity) / initial_capacity * 100
-    print(f"Capacity loss: {percent_capacity_loss}%")
+    # Energy Density
+    # Integrate over time
+    time = sol["Time [h]"].entries
+    voltage = sol["Terminal voltage [V]"].entries
+    current = sol["Current [A]"].entries
 
-    # Extrapolate to 80% capacity (capacity loss is currently 0.33%)
-    cycles_to_80_percent = 20 / (percent_capacity_loss / 100) * num_of_cycles
-    print("Cycles to 80% capacity:", cycles_to_80_percent)
+    wh = simps(voltage * current, time)
+    print(wh)
 
 
 # Run the simulations
