@@ -1,3 +1,4 @@
+from calendar import c
 from matplotlib import pyplot as plt
 from scipy.integrate import simps
 import numpy as np
@@ -52,24 +53,21 @@ def cycle_test():
         [
             "Current [A]",
             "Voltage [V]",
-            "Total lithium capacity [A.h]",
-            "Loss of lithium to SEI [mol]",
         ]
     )
 
     ## Calculations
+    print("-----------------------------------")
     sol = sim.solution
 
     # Energy Density
     # Integrate over time
-    time = sol["Time [h]"].entries
-
     # Cut time off so it's only discharge.
     # Take everything from first index till it hits 3.5V
-    index_to_stop = np.where(sol["Voltage [V]"].entries < 3.501)[0][0]
-    time = time[:index_to_stop]
-    voltage = sol["Voltage [V]"].entries[:index_to_stop]
-    current = sol["Current [A]"].entries[:index_to_stop]
+    discharge_end = np.where(sol["Voltage [V]"].entries < 3.501)[0][0]
+    time = sol["Time [h]"].entries[:discharge_end]
+    voltage = sol["Voltage [V]"].entries[:discharge_end]
+    current = sol["Current [A]"].entries[:discharge_end]
 
     watt_hours = simps(voltage * current, time)
     print(watt_hours)
@@ -78,6 +76,19 @@ def cycle_test():
     cell_volume_cm3 = cell_volume * 1e6
     vol_energy_density = watt_hours / cell_volume_cm3
     print(f"Volumetric energy density: {vol_energy_density} Wh/cm3")
+
+    print("-----------------------------------")
+    # Charging Rate
+    # Cut time off so it's only charge.
+    charge_start = np.where(sol["Current [A]"].entries == -10)[0][0]
+    charge_end = np.where(sol["Current [A]"].entries == -10)[0][-1] + 1
+    time = sol["Time [h]"].entries[charge_start:charge_end]
+    voltage = sol["Voltage [V]"].entries[charge_start:charge_end]
+    current = sol["Current [A]"].entries[charge_start:charge_end]
+    power = voltage * current
+    avg_power = np.mean(power)
+    print(f"Average power: {avg_power} W")
+    print("-----------------------------------")
 
 
 # Run the simulations
