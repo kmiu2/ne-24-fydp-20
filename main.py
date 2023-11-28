@@ -63,11 +63,21 @@ def cycle_test():
     # Energy Density
     # Integrate over time
     time = sol["Time [h]"].entries
-    voltage = sol["Terminal voltage [V]"].entries
-    current = sol["Current [A]"].entries
 
-    wh = simps(voltage * current, time)
-    print(wh)
+    # Cut time off so it's only discharge.
+    # Take everything from first index till it hits 3.5V
+    index_to_stop = np.where(sol["Voltage [V]"].entries < 3.501)[0][0]
+    time = time[:index_to_stop]
+    voltage = sol["Voltage [V]"].entries[:index_to_stop]
+    current = sol["Current [A]"].entries[:index_to_stop]
+
+    watt_hours = simps(voltage * current, time)
+    print(watt_hours)
+
+    cell_volume = parameter_values["Cell volume [m3]"]
+    cell_volume_cm3 = cell_volume * 1e6
+    vol_energy_density = watt_hours / cell_volume_cm3
+    print(f"Volumetric energy density: {vol_energy_density} Wh/cm3")
 
 
 # Run the simulations
