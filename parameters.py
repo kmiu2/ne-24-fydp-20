@@ -46,7 +46,7 @@ mohtat2020 = {
     "Negative electrode active material volume fraction": 0.95,
     "Negative electrode charge transfer coefficient": 0.5,
     "Negative electrode conductivity [S.m-1]": 100.0,
-    "Negative electrode density [kg.m-3]": 1830.0,
+    "Negative electrode density [kg.m-3]": 1790.0,
     "Negative electrode double-layer capacity [F.m-2]": 0.2,
     "Negative electrode porosity": 0.3,
     "Negative electrode reaction-driven LAM factor [m3.mol-1]": 0.0,
