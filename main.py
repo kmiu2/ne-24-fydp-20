@@ -1,4 +1,5 @@
 from calendar import c
+from os import sep
 from matplotlib import pyplot as plt
 from scipy.integrate import simps
 import numpy as np
@@ -70,12 +71,37 @@ def cycle_test():
     current = sol["Current [A]"].entries[:discharge_end]
 
     watt_hours = simps(voltage * current, time)
-    print(watt_hours)
+    print(f"Watt hours: {watt_hours:.3f} Wh")
 
     cell_volume = parameter_values["Cell volume [m3]"]
     cell_volume_cm3 = cell_volume * 1e6
     vol_energy_density = watt_hours / cell_volume_cm3
-    print(f"Volumetric energy density: {vol_energy_density} Wh/cm3")
+    print(f"Volumetric energy density: {vol_energy_density:.3f} Wh/cm3")
+
+    electrode_area = (
+        parameter_values["Electrode height [m]"]
+        * parameter_values["Electrode width [m]"]
+    )
+    negative_electrode_weight = (
+        parameter_values["Negative electrode thickness [m]"]
+        * electrode_area
+        * parameter_values["Negative electrode density [kg.m-3]"]
+    )
+    positive_electrode_weight = (
+        parameter_values["Positive electrode thickness [m]"]
+        * electrode_area
+        * parameter_values["Positive electrode density [kg.m-3]"]
+    )
+    separator_weight = (
+        parameter_values["Separator thickness [m]"]
+        * electrode_area
+        * parameter_values["Separator density [kg.m-3]"]
+    )
+    cell_weight = (
+        negative_electrode_weight + positive_electrode_weight + separator_weight
+    )
+    grav_energy_density = watt_hours / cell_weight
+    print(f"Gravimetric energy density: {grav_energy_density:.3f} Wh/kg")
 
     print("-----------------------------------")
     # Charging Rate
@@ -87,7 +113,7 @@ def cycle_test():
     current = sol["Current [A]"].entries[charge_start:charge_end]
     power = voltage * current
     avg_power = np.mean(power)
-    print(f"Average power: {avg_power} W")
+    print(f"Average power: {avg_power:.3f} W")
     print("-----------------------------------")
 
 
