@@ -50,15 +50,10 @@ def cycle_test():
     # Model and simulation
     model_options = {"SEI": "ec reaction limited"}
     model = pybamm.lithium_ion.SPM(model_options)
-
-    # solver = pybamm.CasadiSolver(mode="fast with events", atol=1e-6, rtol=1e-6)
-    # model = pybamm.lithium_ion.DFN(model_options)
-
     sim = pybamm.Simulation(
         model,
         experiment=experiment,
         parameter_values=parameter_values,
-        # solver=solver,
     )
     sim.solve()
 
