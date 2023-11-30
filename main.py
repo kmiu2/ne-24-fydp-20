@@ -6,13 +6,28 @@ import pybamm
 pybamm.set_logging_level("NOTICE")
 
 
+def find_indices_in_range(entries, lower, upper):
+    arr = np.where(np.logical_and(entries > lower, entries < upper))[0]
+    start = arr[0]
+    end = start
+
+    # Discharge end is when the indexes stop increasing by strictly 1
+    prev_val = arr[0] - 1
+    for i, value in enumerate(arr):
+        if value != prev_val + 1:
+            end = arr[i - 1]
+            break
+        prev_val = value
+
+    return start, end
+
+
 def cycle_test():
     print("*** Running cycle test ***")
 
     ## Simulation
     # Parameter values
-    # num_of_cycles = 2000
-    num_of_cycles = 1
+    num_of_cycles = 5
     cut_off_percent = 85
     parameter_values = pybamm.ParameterValues("Mohtat2020")
     parameter_values.update(mohtat2020)
@@ -61,11 +76,14 @@ def cycle_test():
     # Energy Density
     # Integrate over time
     # Cut time off so it's only discharge.
-    # Take everything from first index till it hits 3.5V
-    discharge_end = np.where(sol["Voltage [V]"].entries < 3.501)[0][0]
-    time = sol["Time [h]"].entries[:discharge_end]
-    voltage = sol["Voltage [V]"].entries[:discharge_end]
-    current = sol["Current [A]"].entries[:discharge_end]
+    # Take where current is first 5/6 until it stops being 5/6.
+    discharge_start, discharge_end = find_indices_in_range(
+        sol["Current [A]"].entries, 0.82, 0.84
+    )
+
+    time = sol["Time [h]"].entries[discharge_start:discharge_end]
+    voltage = sol["Voltage [V]"].entries[discharge_start:discharge_end]
+    current = sol["Current [A]"].entries[discharge_start:discharge_end]
 
     watt_hours = simps(voltage * current, time)
     print(f"Watt hours: {watt_hours:.3f} Wh")
@@ -80,7 +98,8 @@ def cycle_test():
         * parameter_values["Electrode width [m]"]
     )
     negative_electrode_weight = (
-        parameter_values["Negative electrode thickness [m]"]*0.1
+        parameter_values["Negative electrode thickness [m]"]
+        * 0.1
         * electrode_area
         * parameter_values["Negative electrode density [kg.m-3]"]
     )
@@ -102,9 +121,10 @@ def cycle_test():
 
     print("-----------------------------------")
     # Charging Rate
-    # Cut time off so it's only charge.
-    charge_start = np.where(sol["Current [A]"].entries == -10)[0][0]
-    charge_end = np.where(sol["Current [A]"].entries == -10)[0][-1] + 1
+    # Cut time off so it's only charge (around -10A).
+    charge_start, charge_end = find_indices_in_range(
+        sol["Current [A]"].entries, -10.1, -9.9
+    )
     time = sol["Time [h]"].entries[charge_start:charge_end]
     voltage = sol["Voltage [V]"].entries[charge_start:charge_end]
     current = sol["Current [A]"].entries[charge_start:charge_end]
