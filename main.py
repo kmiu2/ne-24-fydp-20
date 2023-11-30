@@ -83,7 +83,7 @@ def cycle_test():
         * parameter_values["Electrode width [m]"]
     )
     negative_electrode_weight = (
-        parameter_values["Negative electrode thickness [m]"]
+        parameter_values["Negative electrode thickness [m]"]*0.1
         * electrode_area
         * parameter_values["Negative electrode density [kg.m-3]"]
     )
