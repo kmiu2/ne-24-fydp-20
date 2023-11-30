@@ -27,6 +27,7 @@ def cycle_test():
 
     ## Simulation
     # Parameter values
+    # num_of_cycles = 2000
     num_of_cycles = 5
     cut_off_percent = 85
     parameter_values = pybamm.ParameterValues("Mohtat2020")
