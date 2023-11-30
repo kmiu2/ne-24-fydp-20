@@ -1,10 +1,7 @@
-from calendar import c
-from os import sep
-from matplotlib import pyplot as plt
+from parameters import mohtat2020
 from scipy.integrate import simps
 import numpy as np
 import pybamm
-from parameters import mohtat2020
 
 pybamm.set_logging_level("NOTICE")
 
