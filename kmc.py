@@ -117,7 +117,7 @@ def run_kmc(num_runs):
 
 
 ## Run multiple times
-num_runs = 10
+num_runs = 25
 num_steps = 5000  # Number of MC steps
 results = np.zeros((num_runs, num_steps))
 for i in range(num_runs):
@@ -131,6 +131,8 @@ std_results = np.zeros(num_steps)
 for i in range(num_steps):
     avg_results[i] = np.mean(results[:, i])
     std_results[i] = np.std(results[:, i])
+
+print("Average Standard Deviation:", np.mean(std_results))
 
 ## Plotting
 steps = np.arange(1, num_steps + 1)
