@@ -28,7 +28,7 @@ def cycle_test():
     ## Simulation
     # Parameter values
     # num_of_cycles = 2000
-    num_of_cycles = 5
+    num_of_cycles = 10
     cut_off_percent = 85
     parameter_values = pybamm.ParameterValues("Mohtat2020")
     parameter_values.update(mohtat2020)
@@ -37,10 +37,10 @@ def cycle_test():
     experiment = pybamm.Experiment(
         [
             (
-                "Discharge at C/6 until 3.5V",
+                "Discharge at C/6 until 3.3V",
                 "Rest for 1 hour",
                 "Charge at 2C until 3.8V",
-                "Hold at 3.8V until C/50",
+                "Hold at 3.8V until C/25",
             ),
         ]
         * num_of_cycles,
@@ -119,7 +119,7 @@ def cycle_test():
     # Charging Rate
     # Cut time off so it's only charge (around -10A).
     charge_start, charge_end = find_indices_in_range(
-        sol["Current [A]"].entries, -10.1, -9.9
+        sol["Current [A]"].entries, -10.1, -0.01
     )
     time = sol["Time [h]"].entries[charge_start:charge_end]
     voltage = sol["Voltage [V]"].entries[charge_start:charge_end]
