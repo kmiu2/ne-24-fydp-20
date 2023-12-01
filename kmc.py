@@ -1,16 +1,16 @@
-# Kinetic Monte Carlo simulation of absorption and desorption of Sodium atoms on Al foil
+# Kinetic Monte Carlo simulation of adsorption and desorption of Sodium atoms on Al foil
 import numpy as np
 import matplotlib.pyplot as plt
 
 ## Input parameters
 alpha = 1  # Strength of near neighbor interaction
-ra = 4  # Absorption rate
-rd = 2  # Desorption rate
+ra = 1e-7  # Adsorption rate, https://doi.org/10.3390/ma10070761
+rd = 0.2e-7  # Desorption rate
 num_runs = 5000  # Number of MC runs
 length = 32  # Length of the foil (number of sites)
 
 ## Rates Setup
-rates = np.zeros(6)  # Rates of absorption and desorption
+rates = np.zeros(6)  # Rates of adsorption and desorption
 rates[0] = ra
 
 # Rates of desorption with respect to number of neighbours
@@ -61,7 +61,7 @@ for run in range(num_runs):
     # Choose event
     rand = np.random.random()
 
-    # Absorption event
+    # Adsorption event
     if rand <= prob[0]:
         temp = np.floor(np.random.random() * num_times[0] + 1)
         if temp > num_times[0]:
