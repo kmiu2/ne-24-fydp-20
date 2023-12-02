@@ -93,10 +93,10 @@ mohtat2020 = {
     "SEI reaction exchange current density [A.m-2]": 1.5e-07,
     "SEI resistivity [Ohm.m]": 200000.0,
     "Separator Bruggeman coefficient (electrolyte)": 1.5,  # Usually 1.5 for porous media
-    "Separator density [kg.m-3]": 397.0,  # Not sure about this one
+    "Separator density [kg.m-3]": 559.0,  # Not sure about this one
     "Separator porosity": 0.39,
-    "Separator specific heat capacity [J.kg-1.K-1]": 700.0,
-    "Separator thermal conductivity [W.m-1.K-1]": 0.16,
+    "Separator specific heat capacity [J.kg-1.K-1]": 1900.0,
+    "Separator thermal conductivity [W.m-1.K-1]": 0.32,
     "Separator thickness [m]": 25e-6,
     "Separator transport efficiency ": 0.25,
     "Thermodynamic factor": 1.0,
