@@ -28,7 +28,7 @@ def cycle_test():
     ## Simulation
     # Parameter values
     # num_of_cycles = 2000
-    num_of_cycles = 5
+    num_of_cycles = 10
     cut_off_percent = 85
     parameter_values = pybamm.ParameterValues("Mohtat2020")
     parameter_values.update(mohtat2020)
@@ -56,14 +56,14 @@ def cycle_test():
         parameter_values=parameter_values,
     )
     sim.solve()
+    sol = sim.solution
 
     # Plot
-    sim.plot(
-        [
-            "Current [A]",
-            "Voltage [V]",
-        ]
-    )
+    pybamm.plot_summary_variables(sol)
+    pybamm.plot_voltage_components(sol)
+    sim.plot(["Current [A]"])
+    sim.plot(["Voltage [V]"])
+    sim.plot(["Loss of lithium inventory [%]"])
 
     ## Calculations
     print("-----------------------------------")
@@ -76,7 +76,7 @@ def cycle_test():
     discharge_start, discharge_end = find_indices_in_range(
         sol["Current [A]"].entries, 0.82, 0.84
     )
-    
+
     time = sol["Time [h]"].entries[discharge_start:discharge_end]
     voltage = sol["Voltage [V]"].entries[discharge_start:discharge_end]
     current = sol["Current [A]"].entries[discharge_start:discharge_end]
@@ -116,13 +116,19 @@ def cycle_test():
         * electrode_area
         * parameter_values["Positive current collector density [kg.m-3]"]
     )
-    casing_weight = 45e-3*electrode_area*2
-    electrolyte_volume = electrode_area * 0.00063575 #number here is estimated from cell thickness (0.21cm) minus other battery components compensated for their estimated porosity when needed
+    casing_weight = 45e-3 * electrode_area * 2
+    electrolyte_volume = (
+        electrode_area * 0.00063575
+    )  # number here is estimated from cell thickness (0.21cm) minus other battery components compensated for their estimated porosity when needed
     electrolyte_weight = electrolyte_volume * 937
-        
+
     cell_weight = (
-        negative_electrode_weight + positive_electrode_weight + separator_weight + 
-        casing_weight + electrolyte_weight + current_collector_weight
+        negative_electrode_weight
+        + positive_electrode_weight
+        + separator_weight
+        + casing_weight
+        + electrolyte_weight
+        + current_collector_weight
     )
     grav_energy_density = watt_hours / cell_weight
     print(f"Cell weight: {cell_weight:.3f} kg")
