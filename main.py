@@ -87,6 +87,7 @@ def cycle_test():
     cell_volume = parameter_values["Cell volume [m3]"]
     cell_volume_cm3 = cell_volume * 1e6
     vol_energy_density = watt_hours / cell_volume_cm3
+    print(f"Cell Volume: {cell_volume_cm3:.3f} cm3")
     print(f"Volumetric energy density: {vol_energy_density:.3f} Wh/cm3")
 
     electrode_area = (
@@ -115,8 +116,8 @@ def cycle_test():
         * electrode_area
         * parameter_values["Positive current collector density [kg.m-3]"]
     )
-    casing_weight = 45e-3*electrode_area
-    electrolyte_volume = electrode_area * 0.00107575 #number here is estimated from cell thickness (0.254cm) minus other battery components compensated for their estimated porosity when needed
+    casing_weight = 45e-3*electrode_area*2
+    electrolyte_volume = electrode_area * 0.00063575 #number here is estimated from cell thickness (0.21cm) minus other battery components compensated for their estimated porosity when needed
     electrolyte_weight = electrolyte_volume * 937
         
     cell_weight = (
@@ -124,6 +125,7 @@ def cycle_test():
         casing_weight + electrolyte_weight + current_collector_weight
     )
     grav_energy_density = watt_hours / cell_weight
+    print(f"Cell weight: {cell_weight:.3f} kg")
     print(f"Gravimetric energy density: {grav_energy_density:.3f} Wh/kg")
 
     print("-----------------------------------")
