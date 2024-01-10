@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def voltageTime(path, sheetname):
+def voltage_time(path, sheetname):
     df = pd.read_excel(path, sheet_name=sheetname)
 
     charge_data = df[["Voltage"]].to_numpy()

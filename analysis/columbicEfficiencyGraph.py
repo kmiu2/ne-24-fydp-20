@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
-def columbicEfficiency(path, sheetname):
+def columbic_efficiency(path, sheetname):
     df = pd.read_excel(path, sheet_name=sheetname)
 
     charge_data = df[["Cycle", "Efficiency"]].to_numpy()

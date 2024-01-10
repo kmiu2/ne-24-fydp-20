@@ -6,7 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def dischargeCapacity(path, sheetname, mass):
+def discharge_capacity(path, sheetname, mass):
     df = pd.read_excel(path, sheet_name=sheetname)
 
     charge_data = df[["Cycle", "CapD"]].to_numpy()
