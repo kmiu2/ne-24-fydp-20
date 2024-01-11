@@ -8,6 +8,10 @@ See full [guide](https://docs.pybamm.org/en/latest/source/user_guide/installatio
 conda create --name fydp python=3.8
 conda activate fydp
 conda install -c conda-forge pybamm
+conda install -c conda-forge numpy
+conda install -c conda-forge pandas
+conda install -c conda-forge matplotlib
+conda install -c conda-forge openpyxl
 ```
 
 ## Activate Environment
