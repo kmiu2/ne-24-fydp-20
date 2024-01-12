@@ -1,12 +1,11 @@
-import pandas as pd
 import matplotlib.pyplot as plt
 
 
-def columbic_efficiency(path, sheetname):
-    df = pd.read_excel(path, sheet_name=sheetname)
-
+def columbic_efficiency(df):
+    # Get data from each column
     charge_data = df[["Cycle", "Efficiency"]].to_numpy()
 
+    # Plotting
     plt.plot(
         charge_data[:, 0],
         charge_data[:, 1],
@@ -14,7 +13,7 @@ def columbic_efficiency(path, sheetname):
         marker="o",
         color="b",
     )
-    plt.xlabel("Cycle number")
-    plt.ylabel("Coulombic Efficiency (%)")
-    plt.title("Efficiency over cycle life")
+    plt.xlabel("Cycle Number")
+    plt.ylabel("Columbic Efficiency (%)")
+    plt.title("Efficiency Over Cycle Life")
     plt.show()
