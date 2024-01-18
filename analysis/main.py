@@ -1,6 +1,6 @@
 import os
 import pandas as pd
-from chargeDischargeGraph import capacity_graph
+from chargeDischargeGraph import capacity_graph, capacity_voltage
 from dischargeCapacityCyclingGraph import discharge_capacity
 from columbicEfficiencyGraph import columbic_efficiency
 from voltageTimeGraph import voltage_time
@@ -12,22 +12,23 @@ if os.getcwd().split("/")[-1] != "analysis":
 
 # Data files
 data = [
-    "003_7(--).xlsx",
-    "003_8(--).xlsx",
+    "003_5(--).xlsx",
 ]
 
 # Plotting
 for d in data:
     path = "./data/" + d
-    mass = 6e-3  # g
+    mass = 6e-6  # kg
 
     print(f"\n---------- Reading Data: {d} ----------")
 
     # Read data from excel file
     df_record = pd.read_excel(path, sheet_name="Record")
     df_cycle = pd.read_excel(path, sheet_name="Cycle")
+    df_step = pd.read_excel(path, sheet_name="Step")
 
     # Plotting
+    capacity_voltage(df_step)
     capacity_graph(df_record, mass)
     voltage_time(df_record)
     discharge_capacity(df_cycle, mass)

@@ -16,6 +16,6 @@ def discharge_capacity(df, mass):
         color="b",
     )
     plt.xlabel("Cycle Number")
-    plt.ylabel("Specific Discharge Capacity (mAh/g)")
+    plt.ylabel("Specific Discharge Capacity (mAh/kg)")
     plt.title("Capacity Over Cycle Life")
     plt.show()

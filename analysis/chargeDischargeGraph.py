@@ -10,15 +10,15 @@ def capacity_graph(df, mass):
 
     # Set variables
     num_data_points = len(charge_data[:, 0])
-    cycle_count = 0  # Can use cycle count for legend if need be - definitely looks cluttered with too many cycles
+    half_cycles = 0  # Can use cycle count for legend if need be - definitely looks cluttered with too many cycles
     cycle_data = np.zeros([1, 2])
 
     # Subplots for linear and log scale
     fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(12, 6))
     fig.suptitle("Charge/Discharge Cycles")
-    ax[0].set_xlabel("Specific Capacity (mAh/g)")
+    ax[0].set_xlabel("Specific Capacity (mAh/kg)")
     ax[0].set_ylabel("Voltage (V)")
-    ax[1].set_xlabel("Specific Capacity (mAh/g)")
+    ax[1].set_xlabel("Specific Capacity (mAh/kg)")
     ax[1].set_ylabel("Voltage (V)")
     ax[1].set_xscale("log")
 
@@ -31,7 +31,7 @@ def capacity_graph(df, mass):
         if current_cycle_type == "CCD" or current_cycle_type == "CCC":
             # If the cycle type changed, update params
             if current_cycle_type != previous_cycle_type:
-                cycle_count = cycle_count + 1
+                half_cycles = half_cycles + 1
                 cycle_data = np.zeros([1, 2])
 
             # Add the data point to the cycle data
@@ -41,11 +41,41 @@ def capacity_graph(df, mass):
 
             # If it's the last data point of the cycle, plot the cycle
             if charge_data[i + 1, 3] != current_cycle_type:
-                ax[0].plot(cycle_data[1:, 0], cycle_data[1:, 1], color=cm(cycle_count))
-                ax[1].plot(cycle_data[1:, 0], cycle_data[1:, 1], color=cm(cycle_count))
+                ax[0].plot(cycle_data[1:, 0], cycle_data[1:, 1], color=cm(half_cycles))
+                ax[1].plot(cycle_data[1:, 0], cycle_data[1:, 1], color=cm(half_cycles))
 
-    # Print data
-    print("Cycle Count: ", cycle_count)
+    print("Cycle count: " + str(half_cycles / 2))
 
     # Plotting
+    plt.show()
+
+
+def capacity_voltage(df):
+    # Get data from each column
+    voltage_data = df[["Step", "Mode", "StartVolt", "EndVolt"]].to_numpy()
+    num_data_points = len(voltage_data[:, 0])
+    lower_voltages = []
+    upper_voltages = []
+
+    # Loop through each data point
+    for i in range(num_data_points):
+        # Initial Rest Voltage
+        if voltage_data[i, 0] == 1 and voltage_data[i, 1] == "Rest":
+            upper_voltages.append(voltage_data[i, 2])
+            lower_voltages.append(0)
+
+        elif voltage_data[i, 1] == "CCD":
+            upper_voltages.append(voltage_data[i, 3])
+            lower_voltages.append(voltage_data[i, 2])
+
+        elif voltage_data[i, 1] == "CCC":
+            upper_voltages.append(voltage_data[i, 2])
+            lower_voltages.append(voltage_data[i, 3])
+
+    # Plotting
+    plt.plot(lower_voltages, color="blue")
+    plt.plot(upper_voltages, color="red")
+    plt.xlabel("Cycle")
+    plt.ylabel("Voltage (V)")
+    plt.title("Voltage vs Cycle")
     plt.show()
