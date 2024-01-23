@@ -12,7 +12,7 @@ if os.getcwd().split("/")[-1] != "analysis":
 
 # Data files
 data = [
-    "003_5(--).xlsx",
+    "life1_5.xlsx",
 ]
 
 # Plotting

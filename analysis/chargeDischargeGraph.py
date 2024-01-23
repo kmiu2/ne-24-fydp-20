@@ -1,12 +1,18 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from helper import cut_off_record, cut_off_step
 
 cm = plt.colormaps["hsv"]
 
 
 def capacity_graph(df, mass):
     # Get data from each column
-    charge_data = df[["Capacity", "Voltage", "Step", "Step Mode"]].to_numpy()
+    charge_data = df[
+        ["Capacity", "Voltage", "Step", "Step Mode", "Cycle Count"]
+    ].to_numpy()
+
+    # Cut off pre-cycles
+    charge_data = cut_off_record(charge_data)
 
     # Set variables
     num_data_points = len(charge_data[:, 0])
@@ -53,6 +59,10 @@ def capacity_graph(df, mass):
 def capacity_voltage(df):
     # Get data from each column
     voltage_data = df[["Step", "Mode", "StartVolt", "EndVolt"]].to_numpy()
+
+    # Cut off pre-cycles
+    voltage_data = cut_off_step(voltage_data)
+
     num_data_points = len(voltage_data[:, 0])
     lower_voltages = []
     upper_voltages = []
