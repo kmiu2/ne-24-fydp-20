@@ -5,8 +5,8 @@ include_pre_cycles = True
 remove_from_end = 1
 
 custom_range = True
-custom_start = 50  # Starting at cycle N
-custom_num_cycles = 5  # Number of cycles to include
+custom_start = 0  # Starting at cycle N
+custom_num_cycles = 6  # Number of cycles to include
 
 
 def cut_off_step(data):
@@ -18,7 +18,9 @@ def cut_off_step(data):
 
     # Viewing N cycles
     if custom_range:
-        start = num_pre_cycles * 2 + custom_start * 2
+        if not include_pre_cycles:
+            start += num_pre_cycles * 2
+        start += custom_start * 2
         end = start + custom_num_cycles * 2
         data = data[start:end, :]
 
@@ -63,12 +65,14 @@ def cut_off_cycle(data):
     # Cut off pre-cycles
     start = 0
     if not include_pre_cycles:
-        start = num_pre_cycles + 1
+        start = num_pre_cycles
         data = data[start:-remove_from_end, :]
 
     # Viewing N cycles
     if custom_range:
-        start = num_pre_cycles + custom_start + 1
+        if not include_pre_cycles:
+            start += num_pre_cycles + 1
+        start += custom_start
         end = start + custom_num_cycles
         data = data[start:end, :]
 

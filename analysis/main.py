@@ -18,7 +18,7 @@ data = [
 # Plotting
 for d in data:
     path = "./data/" + d
-    mass = 6e-6  # kg
+    mass = 38e-6  # kg (meaning e-6 is milli)
 
     print(f"\n---------- Reading Data: {d} ----------")
 
@@ -28,8 +28,8 @@ for d in data:
     df_step = pd.read_excel(path, sheet_name="Step")
 
     # Plotting
-    capacity_voltage(df_step)
-    capacity_graph(df_record, mass)
     voltage_time(df_record)
     discharge_capacity(df_cycle, mass)
     columbic_efficiency(df_cycle)
+    # capacity_voltage(df_step)
+    # capacity_graph(df_record, mass)
