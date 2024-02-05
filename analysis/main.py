@@ -1,11 +1,36 @@
-from chargeDischargeGraph import capacity_graph
+import os
+import pandas as pd
+from chargeDischargeGraph import capacity_graph, capacity_voltage
 from dischargeCapacityCyclingGraph import discharge_capacity
 from columbicEfficiencyGraph import columbic_efficiency
-from voltageTimeGraph import voltage_time
+from voltageCurrentTimeGraph import voltage_time, current_time
 
-path = "003_8.xlsx"
+# Ensure you are in the analysis directory
+if os.getcwd().split("/")[-1] != "analysis":
+    print("Please run this script from the analysis directory")
+    exit()
 
-capacity_graph(path, sheetname="Record", mass=0.0006)
-discharge_capacity(path, sheetname="Cycle", mass=0.0006)
-columbic_efficiency(path, sheetname="Cycle")
-voltage_time(path, sheetname="Record")
+# Data files
+data = [
+    "charge2_7.xlsx",
+]
+
+# Plotting
+for d in data:
+    path = "./data/" + d
+    mass = 38e-6  # kg (meaning e-6 is milli)
+
+    print(f"\n---------- Reading Data: {d} ----------")
+
+    # Read data from excel file
+    df_record = pd.read_excel(path, sheet_name="Record")
+    df_cycle = pd.read_excel(path, sheet_name="Cycle")
+    df_step = pd.read_excel(path, sheet_name="Step")
+
+    # Plotting
+    voltage_time(df_record)
+    current_time(df_record)
+    discharge_capacity(df_cycle, mass)
+    columbic_efficiency(df_cycle)
+    capacity_voltage(df_step)
+    capacity_graph(df_record, mass)
