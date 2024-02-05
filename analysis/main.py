@@ -3,7 +3,7 @@ import pandas as pd
 from chargeDischargeGraph import capacity_graph, capacity_voltage
 from dischargeCapacityCyclingGraph import discharge_capacity
 from columbicEfficiencyGraph import columbic_efficiency
-from voltageTimeGraph import voltage_time
+from voltageCurrentTimeGraph import voltage_time, current_time
 
 # Ensure you are in the analysis directory
 if os.getcwd().split("/")[-1] != "analysis":
@@ -12,7 +12,7 @@ if os.getcwd().split("/")[-1] != "analysis":
 
 # Data files
 data = [
-    "life1_5.xlsx",
+    "charge2_7.xlsx",
 ]
 
 # Plotting
@@ -29,7 +29,8 @@ for d in data:
 
     # Plotting
     voltage_time(df_record)
+    current_time(df_record)
     discharge_capacity(df_cycle, mass)
     columbic_efficiency(df_cycle)
-    # capacity_voltage(df_step)
-    # capacity_graph(df_record, mass)
+    capacity_voltage(df_step)
+    capacity_graph(df_record, mass)

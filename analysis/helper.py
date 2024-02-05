@@ -4,9 +4,9 @@ num_lifetime_cycles = 1000
 include_pre_cycles = True
 remove_from_end = 1
 
-custom_range = True
-custom_start = 0  # Starting at cycle N
-custom_num_cycles = 6  # Number of cycles to include
+custom_range = False
+custom_start = 7  # Starting at cycle N
+custom_num_cycles = 8  # Number of cycles to include
 
 
 def cut_off_step(data):
