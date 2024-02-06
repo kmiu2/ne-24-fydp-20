@@ -12,13 +12,14 @@ if os.getcwd().split("/")[-1] != "analysis":
 
 # Data files
 data = [
-    "charge2_7.xlsx",
+    "charge2_7b.xlsx",
 ]
 
 # Plotting
 for d in data:
     path = "./data/" + d
-    mass = 38e-6  # kg (meaning e-6 is milli)
+    mass = 10.1e-6  # kg (meaning e-6 is milli)
+    voltage = 2.5  # V
 
     print(f"\n---------- Reading Data: {d} ----------")
 
@@ -30,7 +31,7 @@ for d in data:
     # Plotting
     voltage_time(df_record)
     current_time(df_record)
-    discharge_capacity(df_cycle, mass)
+    discharge_capacity(df_cycle, mass, voltage)
     columbic_efficiency(df_cycle)
     capacity_voltage(df_step)
     capacity_graph(df_record, mass)
