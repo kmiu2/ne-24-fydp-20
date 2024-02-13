@@ -22,14 +22,14 @@ def print_customer_requirements(
     voltage,
 ):
     # Get Data
-    cycle_data = df_cycle[["Cycle", "CapD"]].to_numpy()
+    cycle_data = df_cycle[["Cycle", "CapD", "Efficiency"]].to_numpy()
 
     # Cut off pre-cycles
     cycle_data = cut_off_cycle(cycle_data)
 
     print("\n---------- Customer Requirements ----------")
 
-    # Gravimentric Energy Density
+    # Gravimetric Energy Density
     wh_cycle_data = cycle_data[:, 1] * voltage / 1000
     gravimetric_energy_density = wh_cycle_data / mass
     print(
@@ -38,3 +38,9 @@ def print_customer_requirements(
     print(
         f"Avg Gravimetric Energy Density: {np.mean(gravimetric_energy_density):.2f} Wh/kg"
     )
+
+    # Cycle Life
+    avg_coulombic_efficiency = np.mean(cycle_data[:, 2])
+    cycle_life = np.log(0.8) / np.log(avg_coulombic_efficiency / 100)
+    print(f"Avg Coulombic Efficiency: {(avg_coulombic_efficiency):.6f}%")
+    print(f"Cycle Life: {cycle_life:.2f} cycles")
