@@ -41,9 +41,9 @@ for d in data:
     print_customer_requirements(df_cycle, df_record, df_step, mass, voltage)
 
     # Plotting
-    # voltage_time(df_record)
-    # current_time(df_record)
-    # discharge_capacity(df_cycle, mass, voltage)
+    voltage_time(df_record)
+    current_time(df_record)
+    discharge_capacity(df_cycle, mass, voltage)
     columbic_efficiency(df_cycle)
-    # capacity_voltage(df_step)
-    # capacity_graph(df_record, mass)
+    capacity_voltage(df_step)
+    capacity_graph(df_record, mass)

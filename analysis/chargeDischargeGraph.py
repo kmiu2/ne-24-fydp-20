@@ -51,6 +51,7 @@ def capacity_graph(df, mass):
                 ax[1].plot(cycle_data[1:, 0], cycle_data[1:, 1], color=cm(half_cycles))
 
     print("Cycle count: " + str(half_cycles / 2))
+    plt.grid()
 
     # Plotting
     plt.show()
@@ -88,4 +89,5 @@ def capacity_voltage(df):
     plt.xlabel("Cycle")
     plt.ylabel("Voltage (V)")
     plt.title("Voltage vs Cycle")
+    plt.grid()
     plt.show()

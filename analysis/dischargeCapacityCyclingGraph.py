@@ -34,4 +34,5 @@ def discharge_capacity(df, mass, voltage):
     plt.xlabel("Cycle Number")
     plt.ylabel("Specific Discharge Capacity (Wh/kg)")
     plt.title("Capacity Over Cycle Life")
+    plt.grid()
     plt.show()

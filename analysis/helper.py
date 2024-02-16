@@ -1,10 +1,10 @@
 # Variables
-remove_from_start = 1
-remove_from_end = 1
+remove_from_start = 0
+remove_from_end = 0
 num_lifetime_cycles = 1000
 
 custom_range = False
-custom_start = 2  # Starting at cycle N
+custom_start = 1  # Starting at cycle N
 custom_num_cycles = 1  # Number of cycles to include
 
 

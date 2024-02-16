@@ -20,4 +20,5 @@ def columbic_efficiency(df):
     plt.xlabel("Cycle Number")
     plt.ylabel("Columbic Efficiency (%)")
     plt.title("Efficiency Over Cycle Life")
+    plt.grid()
     plt.show()
