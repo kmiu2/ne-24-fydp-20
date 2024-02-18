@@ -25,7 +25,7 @@ def voltage_time(df):
     )
     plt.xlabel("Time (s)")
     plt.ylabel("Voltage (V)")
-    plt.title("Voltage Over Cycle Life")
+    plt.title("Voltage vs. Time")
     plt.grid()
     plt.show()
 
@@ -52,6 +52,6 @@ def current_time(df):
     )
     plt.xlabel("Time (s)")
     plt.ylabel("Current (A)")
-    plt.title("Current Over Cycle Life")
+    plt.title("Current vs. Time")
     plt.grid()
     plt.show()

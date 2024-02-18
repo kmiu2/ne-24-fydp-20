@@ -62,7 +62,7 @@ def capacity_voltage(df):
     voltage_data = df[["Step", "Mode", "StartVolt", "EndVolt"]].to_numpy()
 
     # Cut off pre-cycles
-    voltage_data = cut_off_step(voltage_data)
+    voltage_data = cut_off_step(voltage_data, remove_one=True)
 
     num_data_points = len(voltage_data[:, 0])
     lower_voltages = []
@@ -88,6 +88,6 @@ def capacity_voltage(df):
     plt.plot(upper_voltages, color="red")
     plt.xlabel("Cycle")
     plt.ylabel("Voltage (V)")
-    plt.title("Voltage vs Cycle")
+    plt.title("Voltage vs. Cycle")
     plt.grid()
     plt.show()

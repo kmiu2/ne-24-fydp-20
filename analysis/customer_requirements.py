@@ -25,7 +25,7 @@ def print_customer_requirements(
     cycle_data = df_cycle[["Cycle", "CapD", "Efficiency"]].to_numpy()
 
     # Cut off pre-cycles
-    cycle_data = cut_off_cycle(cycle_data)
+    cycle_data = cut_off_cycle(cycle_data, remove_one=True)
 
     print("\n---------- Customer Requirements ----------")
 

@@ -10,7 +10,7 @@ def discharge_capacity(df, mass, voltage):
     charge_data = df[["Cycle", "CapD"]].to_numpy()
 
     # Cut off pre-cycles
-    charge_data = cut_off_cycle(charge_data)
+    charge_data = cut_off_cycle(charge_data, remove_one=True)
 
     # (mAh)*(V)/1000 = (Wh)
     wh_data = charge_data[:, 1] * voltage / 1000
@@ -33,6 +33,6 @@ def discharge_capacity(df, mass, voltage):
     )
     plt.xlabel("Cycle Number")
     plt.ylabel("Specific Discharge Capacity (Wh/kg)")
-    plt.title("Capacity Over Cycle Life")
+    plt.title("Capacity vs. Cycles")
     plt.grid()
     plt.show()

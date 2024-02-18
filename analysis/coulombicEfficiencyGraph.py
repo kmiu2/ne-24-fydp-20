@@ -7,7 +7,7 @@ def columbic_efficiency(df):
     charge_data = df[["Cycle", "Efficiency"]].to_numpy()
 
     # Cut off pre-cycles
-    charge_data = cut_off_cycle(charge_data)
+    charge_data = cut_off_cycle(charge_data, remove_one=True)
 
     # Plotting
     plt.plot(
@@ -19,6 +19,6 @@ def columbic_efficiency(df):
     )
     plt.xlabel("Cycle Number")
     plt.ylabel("Columbic Efficiency (%)")
-    plt.title("Efficiency Over Cycle Life")
+    plt.title("Efficiency vs. Cycles")
     plt.grid()
     plt.show()

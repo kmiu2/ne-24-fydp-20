@@ -8,9 +8,13 @@ custom_start = 1  # Starting at cycle N
 custom_num_cycles = 1  # Number of cycles to include
 
 
-def cut_off_step(data):
+def cut_off_step(data, remove_one=False):
+    if remove_one:
+        remove_from_start = 1
+        remove_from_end = 1
+
     # Cut off pre-cycles
-    data = data[(remove_from_start * 2) : (len(data) - remove_from_end) * 2, :]
+    data = data[(remove_from_start * 2) : (len(data) - remove_from_end * 2), :]
 
     # Viewing N cycles
     if custom_range:
@@ -55,7 +59,11 @@ def cut_off_record(data):
     return data
 
 
-def cut_off_cycle(data):
+def cut_off_cycle(data, remove_one=False):
+    if remove_one:
+        remove_from_start = 1
+        remove_from_end = 1
+
     # Cut off pre-cycles
     data = data[remove_from_start : (len(data) - remove_from_end), :]
 
