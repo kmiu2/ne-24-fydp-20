@@ -83,9 +83,11 @@ def capacity_voltage(df):
             upper_voltages.append(voltage_data[i, 2])
             lower_voltages.append(voltage_data[i, 3])
 
+    cycle_count = np.arange(1, (len(lower_voltages)) / 2 + 1, 0.5)
+
     # Plotting
-    plt.plot(lower_voltages, color="blue")
-    plt.plot(upper_voltages, color="red")
+    plt.plot(cycle_count, lower_voltages, color="blue")
+    # plt.plot(cycle_count, upper_voltages, color="red")
     plt.xlabel("Cycle")
     plt.ylabel("Voltage (V)")
     plt.title("Voltage vs. Cycle")
