@@ -12,10 +12,10 @@ if os.getcwd().split("/")[-1] != "analysis":
     exit()
 
 # Data files
-# Naming system: "life or charge" + "test suite" + "_" + "channel"
-#                 + "(optional b and latter letters for continued testing)" + ".xlsx"
+# Naming system: "cell number"_"life or charge"_ +
+#                "(optional letters for further tests)".xlsx
 data = [
-    "life3_4b.xlsx",
+    "1_charge.xlsx",
 ]
 
 # Plotting
@@ -23,7 +23,7 @@ for d in data:
     path = "./data/" + d
     mass = 19.60  # mg
     mass *= 1e-6  # to kg
-    voltage = 2.8  # V
+    voltage = 2.0  # V
 
     print(f"\n---------- Reading Data: {d} ----------")
 
@@ -42,8 +42,8 @@ for d in data:
 
     # Plotting
     voltage_time(df_record)
+    capacity_voltage(df_step)
     current_time(df_record)
     discharge_capacity(df_cycle, mass, voltage)
     columbic_efficiency(df_cycle)
-    capacity_voltage(df_step)
     capacity_graph(df_record, mass)
