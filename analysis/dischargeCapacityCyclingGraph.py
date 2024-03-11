@@ -2,7 +2,7 @@
 # Need to figure out how to get specific capacity as well
 import matplotlib.pyplot as plt
 import numpy as np
-from helper import cut_off_cycle
+from analysis.helper import cut_off_cycle
 
 
 def discharge_capacity(df, mass, voltage):

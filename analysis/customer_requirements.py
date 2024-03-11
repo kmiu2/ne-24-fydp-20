@@ -1,5 +1,5 @@
 import numpy as np
-from helper import cut_off_cycle
+from analysis.helper import cut_off_cycle
 
 ## Customer Requirements
 # Primary:

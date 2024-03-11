@@ -1,15 +1,9 @@
-import os
 import pandas as pd
-from customer_requirements import print_customer_requirements
-from chargeDischargeGraph import capacity_graph, capacity_voltage
-from dischargeCapacityCyclingGraph import discharge_capacity
-from coulombicEfficiencyGraph import columbic_efficiency
-from voltageCurrentTimeGraph import voltage_time, current_time
-
-# Ensure you are in the analysis directory
-if os.getcwd().split("/")[-1] != "analysis":
-    print("Please run this script from the analysis directory")
-    exit()
+from analysis.customer_requirements import print_customer_requirements
+from analysis.chargeDischargeGraph import capacity_graph, capacity_voltage
+from analysis.dischargeCapacityCyclingGraph import discharge_capacity
+from analysis.coulombicEfficiencyGraph import columbic_efficiency
+from analysis.voltageCurrentTimeGraph import voltage_time, current_time
 
 # Data files
 # Naming system: "cell number"_"life or charge"_ +

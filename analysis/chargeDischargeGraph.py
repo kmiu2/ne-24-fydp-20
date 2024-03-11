@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from helper import cut_off_record, cut_off_step
+from analysis.helper import cut_off_record, cut_off_step
 
 cm = plt.colormaps["hsv"]
 

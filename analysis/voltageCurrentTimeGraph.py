@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from helper import cut_off_record
+from analysis.helper import cut_off_record
 
 
 def voltage_time(df):
