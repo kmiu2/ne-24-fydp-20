@@ -15,13 +15,13 @@ if os.getcwd().split("/")[-1] != "analysis":
 # Naming system: "cell number"_"life or charge"_ +
 #                "(optional letters for further tests)".xlsx
 data = [
-    "1_charge.xlsx",
+    "42_life.xlsx",
 ]
 
 # Plotting
 for d in data:
     path = "./data/" + d
-    mass = 19.60  # mg
+    mass = 30.10  # mg
     mass *= 1e-6  # to kg
     voltage = 2.0  # V
 

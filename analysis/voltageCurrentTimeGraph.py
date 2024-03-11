@@ -51,7 +51,7 @@ def current_time(df):
         color="b",
     )
     plt.xlabel("Time (s)")
-    plt.ylabel("Current (A)")
+    plt.ylabel("Current (mA)")
     plt.title("Current vs. Time")
     plt.grid()
     plt.show()

@@ -13,7 +13,7 @@ def cut_off_step(data, remove_one=False):
         remove_from_start = 1
         remove_from_end = 1
 
-    # Cut off pre-cycles
+    # Cut off cycles
     data = data[(remove_from_start * 2) : (len(data) - remove_from_end * 2), :]
 
     # Viewing N cycles
@@ -26,7 +26,7 @@ def cut_off_step(data, remove_one=False):
 
 
 def cut_off_record(data):
-    # Cut off pre-cycles
+    # Cut off cycles
     if remove_from_start > 0:
         start = 0
         end = 0
@@ -59,12 +59,14 @@ def cut_off_record(data):
     return data
 
 
-def cut_off_cycle(data, remove_one=False):
+def cut_off_cycle(data, remove_one=False, remove_dead_cycles=False):
     if remove_one:
         remove_from_start = 1
         remove_from_end = 1
 
-    # Cut off pre-cycles
+    # Cut off cycles
+    # if remove_dead_cycles:
+
     data = data[remove_from_start : (len(data) - remove_from_end), :]
 
     # Viewing N cycles
