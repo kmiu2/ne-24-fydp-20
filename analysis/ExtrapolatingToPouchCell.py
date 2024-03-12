@@ -59,6 +59,7 @@ NaCMCsDensity = 1.6 #
 rGODensity = 0.3 #
 pouchCellMaterialDensity = 45 # g/m^2
 seperatorDensity = 0.92 # g/cm3
+electrolyteDensity = 0.937 # g/ml
 # PouchCellDimensions
 pouch_L = 12.5 # cm
 pouch_H = 0.2 # cm
@@ -67,8 +68,9 @@ layers = 1
 pouch_Area = pouch_L * pouch_W
 pouch_SurfaceArea = 2*pouch_Area + 2*(pouch_H*pouch_L + pouch_H*pouch_W)
 # Pouch Cell Materials Dimensions
-CurrentCollectorThick = 0.016 # mm
+CurrentCollectorThick = 0.012 # mm
 SeparatorThick = 0.025 # mm
+ElectrolytePerUnitArea = 0.225 # mL/cm^2 : this is ~3x what we use in a coin cell to be generous
 
 
 
@@ -100,7 +102,9 @@ CathMass = CathodeDensity*pouch_Area*CathThick * layers
 AnodeMass = AnodeDensity*pouch_Area*AnodeThick * layers
 SeperatorMass = seperatorDensity*pouch_Area*SeparatorThick * layers
 CurrentCollectorMass = AlFoilDensity*pouch_Area*CurrentCollectorThick * (layers+1)
-TotalMass = PouchCellMatMass + CathMass + AnodeMass + SeperatorMass + CurrentCollectorMass
+volumeElectrolyte = ElectrolytePerUnitArea * pouch_Area
+MassElectrolyte = ElectrolytePerUnitArea * electrolyteDensity
+TotalMass = PouchCellMatMass + CathMass + AnodeMass + SeperatorMass + CurrentCollectorMass + MassElectrolyte
 
 # calculate overall energy Densities
 BatGravEnergyDensity = AnodeMass*AnodeActEnergyDensity/TotalMass
