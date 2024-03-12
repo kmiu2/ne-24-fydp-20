@@ -5,30 +5,24 @@ import numpy as np
 from analysis.helper import cut_off_cycle
 
 
-def discharge_capacity(df, mass, voltage):
+def discharge_capacity(df_cycle, mass, voltage):
     # Get data from each column
-    charge_data = df[["Cycle", "CapD"]].to_numpy()
+    cycle_data = df_cycle[["Cycle", "CapD"]].to_numpy()
 
     # Cut off pre-cycles
-    charge_data = cut_off_cycle(charge_data, remove_one=True)
+    cycle_data = cut_off_cycle(cycle_data, remove_one=True)
 
     # (mAh)*(V)/1000 = (Wh)
-    wh_data = charge_data[:, 1] * voltage / 1000
-    x = charge_data[:, 0]
+    wh_data = cycle_data[:, 1] * voltage / 1000
+    x = cycle_data[:, 0]
     y = wh_data / mass
-    polyfit = np.polyfit(x, y, 15)
 
     # Plotting
     plt.plot(
         x,
         y,
-        linestyle="None",
+        linestyle="-",
         marker="o",
-        color="lightskyblue",
-    )
-    plt.plot(
-        x,
-        np.polyval(polyfit, x),
         color="b",
     )
     plt.xlabel("Cycle Number")

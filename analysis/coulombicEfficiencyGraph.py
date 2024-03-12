@@ -2,17 +2,28 @@ import matplotlib.pyplot as plt
 from analysis.helper import cut_off_cycle
 
 
-def columbic_efficiency(df):
+def columbic_efficiency(df_cycle):
     # Get data from each column
-    charge_data = df[["Cycle", "Efficiency"]].to_numpy()
+    cycle_data = df_cycle[["Cycle", "CapC", "CapD", "Efficiency"]].to_numpy()
 
     # Cut off pre-cycles
-    charge_data = cut_off_cycle(charge_data, remove_one=True)
+    cycle_data = cut_off_cycle(cycle_data, remove_one=True)
+
+    # Coulombic Efficiency
+    # - Loop through all entries
+    # - Take the larger of CapC and CapD as the denominator
+    # - Average to get the efficiency
+    adjusted_efficiencies = []
+    for cycle in cycle_data:
+        capC = cycle[1]
+        capD = cycle[2]
+        adjusted_efficiency = min(capC, capD) / max(capC, capD) * 100
+        adjusted_efficiencies.append(adjusted_efficiency)
 
     # Plotting
     plt.plot(
-        charge_data[:, 0],
-        charge_data[:, 1],
+        cycle_data[:, 0],
+        adjusted_efficiencies,
         linestyle="-",
         marker="o",
         color="b",

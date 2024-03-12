@@ -5,17 +5,17 @@ from analysis.helper import cut_off_record, cut_off_step
 cm = plt.colormaps["hsv"]
 
 
-def capacity_graph(df, mass):
+def capacity_graph(df_record, mass):
     # Get data from each column
-    charge_data = df[
+    record_data = df_record[
         ["Capacity", "Voltage", "Step", "Step Mode", "Cycle Count"]
     ].to_numpy()
 
     # Cut off pre-cycles
-    charge_data = cut_off_record(charge_data)
+    record_data = cut_off_record(record_data)
 
     # Set variables
-    num_data_points = len(charge_data[:, 0])
+    num_data_points = len(record_data[:, 0])
     half_cycles = 0  # Can use cycle count for legend if need be - definitely looks cluttered with too many cycles
     cycle_data = np.zeros([1, 2])
 
@@ -30,8 +30,8 @@ def capacity_graph(df, mass):
 
     # Loop through each data point
     for i in range(num_data_points - 1):
-        current_cycle_type = charge_data[i, 3]
-        previous_cycle_type = charge_data[i - 1, 3]
+        current_cycle_type = record_data[i, 3]
+        previous_cycle_type = record_data[i - 1, 3]
 
         # Get data for charge/discharge cycles
         if current_cycle_type == "CCD" or current_cycle_type == "CCC":
@@ -42,11 +42,11 @@ def capacity_graph(df, mass):
 
             # Add the data point to the cycle data
             cycle_data = np.concatenate(
-                (cycle_data, [[charge_data[i, 0] / mass, charge_data[i, 1]]])
+                (cycle_data, [[record_data[i, 0] / mass, record_data[i, 1]]])
             )
 
             # If it's the last data point of the cycle, plot the cycle
-            if charge_data[i + 1, 3] != current_cycle_type:
+            if record_data[i + 1, 3] != current_cycle_type:
                 ax[0].plot(cycle_data[1:, 0], cycle_data[1:, 1], color=cm(half_cycles))
                 ax[1].plot(cycle_data[1:, 0], cycle_data[1:, 1], color=cm(half_cycles))
 

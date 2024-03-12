@@ -3,24 +3,24 @@ import numpy as np
 from analysis.helper import cut_off_record
 
 
-def voltage_time(df):
+def voltage_time(df_record):
     # Get data from each column
-    charge_data = df[["Voltage", "Cycle Count"]].to_numpy()
+    record_data = df_record[["Voltage", "Cycle Count"]].to_numpy()
 
     # Cut off pre-cycles
-    charge_data = cut_off_record(charge_data)
+    record_data = cut_off_record(record_data)
 
     # Remove cycle count column
-    charge_data = charge_data[:, 0]
+    record_data = record_data[:, 0]
 
     # Create x-axis
     time_interval = 10  # seconds
-    x = time_interval * np.arange(charge_data.size)
+    x = time_interval * np.arange(record_data.size)
 
     # Plotting
     plt.plot(
         x,
-        charge_data,
+        record_data,
         color="b",
     )
     plt.xlabel("Time (s)")
@@ -30,24 +30,24 @@ def voltage_time(df):
     plt.show()
 
 
-def current_time(df):
+def current_time(df_record):
     # Get data from each column
-    charge_data = df[["Current", "Cycle Count"]].to_numpy()
+    record_data = df_record[["Current", "Cycle Count"]].to_numpy()
 
     # Cut off pre-cycles
-    charge_data = cut_off_record(charge_data)
+    record_data = cut_off_record(record_data)
 
     # Remove cycle count column
-    charge_data = charge_data[:, 0]
+    record_data = record_data[:, 0]
 
     # Create x-axis
     time_interval = 10  # seconds
-    x = time_interval * np.arange(charge_data.size)
+    x = time_interval * np.arange(record_data.size)
 
     # Plotting
     plt.plot(
         x,
-        charge_data,
+        record_data,
         color="b",
     )
     plt.xlabel("Time (s)")

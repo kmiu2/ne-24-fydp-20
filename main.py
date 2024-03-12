@@ -9,7 +9,7 @@ data = [
         "mass_mg": 10.10,
     }
 ]  # Data is an array, which means you can put run multiple data files in one go
-show_plots = False
+show_plots = True
 custom_voltage = 0  # Set a different voltage. If 0, it will take 95% of max voltage
 
 #################################################
