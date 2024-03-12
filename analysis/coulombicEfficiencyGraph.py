@@ -7,7 +7,7 @@ def columbic_efficiency(df_cycle):
     cycle_data = df_cycle[["Cycle", "CapC", "CapD", "Efficiency"]].to_numpy()
 
     # Cut off pre-cycles
-    cycle_data = cut_off_cycle(cycle_data, remove_one=True)
+    cycle_data = cut_off_cycle(cycle_data)
 
     # Coulombic Efficiency
     # - Loop through all entries

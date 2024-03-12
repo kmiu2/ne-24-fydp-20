@@ -26,7 +26,7 @@ def print_customer_requirements(
 
     # Cut off pre-cycles
     # Also remove last cycle since its incomplete
-    cycle_data = cut_off_cycle(cycle_data, remove_one=True)
+    cycle_data = cut_off_cycle(cycle_data)
 
     print("\n---------- Customer Requirements ----------")
 

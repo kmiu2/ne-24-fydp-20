@@ -5,13 +5,13 @@ from analysis.helper import cut_off_record
 
 def voltage_time(df_record):
     # Get data from each column
-    record_data = df_record[["Voltage", "Cycle Count"]].to_numpy()
+    record_data = df_record[["Cycle Count", "Voltage"]].to_numpy()
 
     # Cut off pre-cycles
     record_data = cut_off_record(record_data)
 
-    # Remove cycle count column
-    record_data = record_data[:, 0]
+    # Get voltage data
+    record_data = record_data[:, 1]
 
     # Create x-axis
     time_interval = 10  # seconds
@@ -32,13 +32,13 @@ def voltage_time(df_record):
 
 def current_time(df_record):
     # Get data from each column
-    record_data = df_record[["Current", "Cycle Count"]].to_numpy()
+    record_data = df_record[["Cycle Count", "Current"]].to_numpy()
 
     # Cut off pre-cycles
     record_data = cut_off_record(record_data)
 
-    # Remove cycle count column
-    record_data = record_data[:, 0]
+    # Get current data
+    record_data = record_data[:, 1]
 
     # Create x-axis
     time_interval = 10  # seconds
