@@ -5,8 +5,8 @@
 
 data = [
     {
-        "file_name": "18_life.xlsx",
-        "mass_mg": 10.10,
+        "file_name": "51_life_pre.xlsx",
+        "mass_mg": 20.00,
     }
 ]  # Data is an array, which means you can put run multiple data files in one go
 show_plots = True

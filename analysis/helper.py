@@ -4,7 +4,7 @@ remove_from_end = 1
 num_lifetime_cycles = 1000
 
 custom_range = False
-custom_start = 1  # Starting at cycle N
+custom_start = 2  # Starting at cycle N
 custom_num_cycles = 1  # Number of cycles to include
 
 
@@ -36,8 +36,8 @@ def cut_off_record(data):
         for i in range(len(data[:, 0])):
             if start == 0 and data[i, 0] == custom_start:
                 start = i
-            elif data[i, 0] == (custom_start + custom_num_cycles + 1):
-                end = i - 1
+            elif data[i, 0] == (custom_start + custom_num_cycles):
+                end = i
                 break
 
     else:
@@ -45,7 +45,7 @@ def cut_off_record(data):
             if data[i, 0] <= remove_from_start:
                 start = i
             if data[i, 0] > (max_cycle - remove_from_end):
-                end = i - 1
+                end = i
                 break
 
     return data[start:end, :]
