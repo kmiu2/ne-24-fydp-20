@@ -1,4 +1,10 @@
-# NE 24 FYDP Group 20 Simulations
+# NE 24 FYDP Group 20
+
+# Data Analysis
+
+Run the main.py file in the root directory to analyze data.
+
+# Simulations
 
 ## Create Environment and Install PyBaMM
 
