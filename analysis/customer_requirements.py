@@ -27,6 +27,7 @@ def print_customer_requirements(
     record_data = df_record[
         ["Cycle Count", "Current", "Voltage", "Step", "Step Mode"]
     ].to_numpy()
+    step_data = df_step[["Step", "Mode", "Period", "Capacity"]].to_numpy()
 
     # Cut off pre-cycles
     # Also remove last cycle since its incomplete
@@ -34,11 +35,16 @@ def print_customer_requirements(
     record_data = cut_off_cycle(record_data)
 
     print("\n---------- Customer Requirements ----------")
-
     ## Gravimetric Energy Density
     # - Wh = mAh * V / 1000
     # - Wh/kg = Wh / kg
-    wh_cycle_data = cycle_data[:, 1] * voltage / 1000
+
+    # Get the larger of CapC and CapD
+    capacities = []
+    for cycle in cycle_data:
+        capacities.append(max(cycle[1], cycle[2]))
+
+    wh_cycle_data = np.array(capacities) * voltage / 1000
     gravimetric_energy_density = wh_cycle_data / mass
     print(
         f"Max Gravimetric Energy Density: {np.max(gravimetric_energy_density):.2f} Wh/kg"
@@ -65,8 +71,9 @@ def print_customer_requirements(
     print(f"\nAvg Coulombic Efficiency: {(avg_coulombic_efficiency):.5f}%")
     print(f"Cycle Life: {cycle_life:.2f} cycles")
 
-    ## Energy Efficiency
+    ## Energy Efficiency and Charge Rate
     # - Integral [across 1 cycle] of (Current x Voltage x dt)
+    # - Charge Rate = Energy / Time
 
     # Get index of each new charge cycle
     cycle_indices = []
@@ -79,28 +86,43 @@ def print_customer_requirements(
         if record_data[i][4] != record_data[i - 1][4]:
             cycle_indices.append(i)
 
-    # Calculate energy for each CCC and CCD
+    # Calculate energy and time for each CCC and CCD
     energies = []
+    run_times = []
     for i in range(len(cycle_indices) - 1):
         # Get indices for each cycle
         start = cycle_indices[i]
         end = cycle_indices[i + 1]
 
         # Get current, voltage data, calculate time
-        current = record_data[start:end, 1]
-        voltage = record_data[start:end, 2]
+        cycle_current = record_data[start:end, 1]  # mA
+        cycle_current = cycle_current / 1000  # A
+        cycle_voltage = record_data[start:end, 2]  # V
         time_interval = 10  # seconds
-        time = time_interval * np.arange(current.size)
+        time = time_interval * np.arange(cycle_current.size)
 
         # Calculate energies
-        energy = simpson(current * voltage, time)
-        energies.append(abs(energy))
+        energy = simpson(abs(cycle_current * cycle_voltage), time)  # Wh
+        energies.append(energy)
 
-    # Calculate energy efficiencies
+        # Also calculate time
+        run_time = time[-1] / 3600  # hours
+        run_times.append(run_time)
+
+    # Calculate energy efficiencies and charge rates
     energy_efficiencies = []
+    charge_rates = []
     for i in range(0, len(energies) - 1, 2):
+        # Energy Efficiency = (Energy in CCD) / (Energy in CCC)
         energy_efficiency = energies[i + 1] / energies[i]
         energy_efficiencies.append(energy_efficiency)
 
+        # Charge Rate = Energy / Time
+        charge_rate = energies[i] / run_times[i]
+        charge_rates.append(charge_rate)
+
     avg_energy_efficiency = np.mean(energy_efficiencies) * 100
     print(f"\nAvg Energy Efficiency: {avg_energy_efficiency:.2f}%")
+
+    avg_charge_rate = np.mean(charge_rates)
+    print(f"\nAvg Charge Rate: {avg_charge_rate:.2f} W")

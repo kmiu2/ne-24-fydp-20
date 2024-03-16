@@ -7,15 +7,20 @@ from analysis.helper import cut_off_cycle
 
 def discharge_capacity(df_cycle, mass, voltage):
     # Get data from each column
-    cycle_data = df_cycle[["Cycle", "CapD"]].to_numpy()
+    cycle_data = df_cycle[["Cycle", "CapC", "CapD"]].to_numpy()
 
     # Cut off pre-cycles
     cycle_data = cut_off_cycle(cycle_data)
 
     # (mAh)*(V)/1000 = (Wh)
-    wh_data = cycle_data[:, 1] * voltage / 1000
+    # Get the larger of CapC and CapD
+    capacities = []
+    for cycle in cycle_data:
+        capacities.append(max(cycle[1], cycle[2]))
+
+    wh_cycle_data = np.array(capacities) * voltage / 1000
     x = cycle_data[:, 0]
-    y = wh_data / mass
+    y = wh_cycle_data / mass
 
     # Plotting
     plt.plot(

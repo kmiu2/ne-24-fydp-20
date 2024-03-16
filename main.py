@@ -5,12 +5,12 @@
 
 data = [
     {
-        "file_name": "59_life_full_cell.xlsx",
+        "file_name": "49_life.xlsx",
         "mass_mg": 10.00,
     }
 ]  # Data is an array, which means you can put run multiple data files in one go
 show_plots = True
-custom_voltage = 0  # Set a different voltage. If 0, it will take 95% of max voltage
+custom_voltage = 0  # Set a different voltage. If 0, it will take max voltage
 
 #################################################
 ################### Main Code ###################
@@ -40,7 +40,7 @@ for d in data:
     if custom_voltage != 0:
         max_voltage = custom_voltage
     else:
-        max_voltage = record_data.max() * 0.95
+        max_voltage = record_data.max()
 
     print(f"Mass: {(mass_kg * 1e6):.2f} mg")
     print(f"Voltage: {max_voltage:.2f} V")
