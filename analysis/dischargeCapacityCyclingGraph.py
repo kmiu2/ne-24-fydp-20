@@ -5,12 +5,12 @@ import numpy as np
 from analysis.helper import cut_off_cycle
 
 
-def discharge_capacity(df_cycle, mass, voltage):
+def discharge_capacity(df_cycle, mass, voltage, helper_parameters):
     # Get data from each column
     cycle_data = df_cycle[["Cycle", "CapC", "CapD"]].to_numpy()
 
     # Cut off pre-cycles
-    cycle_data = cut_off_cycle(cycle_data)
+    cycle_data = cut_off_cycle(cycle_data, helper_parameters)
 
     # (mAh)*(V)/1000 = (Wh)
     # Get the larger of CapC and CapD

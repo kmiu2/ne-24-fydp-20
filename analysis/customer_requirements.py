@@ -21,6 +21,7 @@ def print_customer_requirements(
     df_step,
     mass,
     voltage,
+    helper_parameters,
 ):
     # Get Data
     cycle_data = df_cycle[["Cycle", "CapC", "CapD", "Efficiency"]].to_numpy()
@@ -31,8 +32,8 @@ def print_customer_requirements(
 
     # Cut off pre-cycles
     # Also remove last cycle since its incomplete
-    cycle_data = cut_off_cycle(cycle_data)
-    record_data = cut_off_cycle(record_data)
+    cycle_data = cut_off_cycle(cycle_data, helper_parameters)
+    record_data = cut_off_cycle(record_data, helper_parameters)
 
     print("\n---------- Customer Requirements ----------")
     ## Gravimetric Energy Density

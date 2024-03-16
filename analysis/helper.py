@@ -1,14 +1,18 @@
-# Variables
-remove_from_start = 1
-remove_from_end = 1
-num_lifetime_cycles = 1000
+def cut_off_step(data, helper_parameters):
+    (
+        remove_from_start,
+        remove_from_end,
+        custom_range,
+        custom_start,
+        custom_num_cycles,
+    ) = (
+        helper_parameters["remove_from_start"],
+        helper_parameters["remove_from_end"],
+        helper_parameters["custom_range"],
+        helper_parameters["custom_start"],
+        helper_parameters["custom_num_cycles"],
+    )
 
-custom_range = False
-custom_start = 2  # Starting at cycle N
-custom_num_cycles = 1  # Number of cycles to include
-
-
-def cut_off_step(data):
     # Viewing N cycles
     if custom_range:
         start = remove_from_start * 2 + custom_start * 2
@@ -22,7 +26,21 @@ def cut_off_step(data):
     return data
 
 
-def cut_off_record(data):
+def cut_off_record(data, helper_parameters):
+    (
+        remove_from_start,
+        remove_from_end,
+        custom_range,
+        custom_start,
+        custom_num_cycles,
+    ) = (
+        helper_parameters["remove_from_start"],
+        helper_parameters["remove_from_end"],
+        helper_parameters["custom_range"],
+        helper_parameters["custom_start"],
+        helper_parameters["custom_num_cycles"],
+    )
+
     # Cut off cycles
     # - Use the column "Cycle Count" (column 0), remove the first and last N cycles
     # - For first n, if "Cycle Count" value <= remove_from_start, remove it
@@ -51,7 +69,21 @@ def cut_off_record(data):
     return data[start:end, :]
 
 
-def cut_off_cycle(data):
+def cut_off_cycle(data, helper_parameters):
+    (
+        remove_from_start,
+        remove_from_end,
+        custom_range,
+        custom_start,
+        custom_num_cycles,
+    ) = (
+        helper_parameters["remove_from_start"],
+        helper_parameters["remove_from_end"],
+        helper_parameters["custom_range"],
+        helper_parameters["custom_start"],
+        helper_parameters["custom_num_cycles"],
+    )
+
     # Viewing N cycles
     if custom_range:
         start = remove_from_start + custom_start

@@ -3,12 +3,12 @@ import numpy as np
 from analysis.helper import cut_off_record
 
 
-def voltage_time(df_record):
+def voltage_time(df_record, helper_parameters):
     # Get data from each column
     record_data = df_record[["Cycle Count", "Voltage"]].to_numpy()
 
     # Cut off pre-cycles
-    record_data = cut_off_record(record_data)
+    record_data = cut_off_record(record_data, helper_parameters)
 
     # Get voltage data
     record_data = record_data[:, 1]
@@ -30,12 +30,12 @@ def voltage_time(df_record):
     plt.show()
 
 
-def current_time(df_record):
+def current_time(df_record, helper_parameters):
     # Get data from each column
     record_data = df_record[["Cycle Count", "Current"]].to_numpy()
 
     # Cut off pre-cycles
-    record_data = cut_off_record(record_data)
+    record_data = cut_off_record(record_data, helper_parameters)
 
     # Get current data
     record_data = record_data[:, 1]

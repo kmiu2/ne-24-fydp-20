@@ -2,12 +2,12 @@ import matplotlib.pyplot as plt
 from analysis.helper import cut_off_cycle
 
 
-def columbic_efficiency(df_cycle):
+def columbic_efficiency(df_cycle, helper_parameters):
     # Get data from each column
     cycle_data = df_cycle[["Cycle", "CapC", "CapD", "Efficiency"]].to_numpy()
 
     # Cut off pre-cycles
-    cycle_data = cut_off_cycle(cycle_data)
+    cycle_data = cut_off_cycle(cycle_data, helper_parameters)
 
     # Coulombic Efficiency
     # - Loop through all entries

@@ -5,14 +5,14 @@ from analysis.helper import cut_off_record, cut_off_step
 cm = plt.colormaps["hsv"]
 
 
-def capacity_graph(df_record, mass):
+def capacity_graph(df_record, mass, helper_parameters):
     # Get data from each column
     record_data = df_record[
         ["Cycle Count", "Capacity", "Voltage", "Step", "Step Mode"]
     ].to_numpy()
 
     # Cut off pre-cycles
-    record_data = cut_off_record(record_data)
+    record_data = cut_off_record(record_data, helper_parameters)
 
     # Set variables
     num_data_points = len(record_data[:, 0])
@@ -57,12 +57,12 @@ def capacity_graph(df_record, mass):
     plt.show()
 
 
-def capacity_voltage(df):
+def capacity_voltage(df, helper_parameters):
     # Get data from each column
     voltage_data = df[["Step", "Mode", "StartVolt", "EndVolt"]].to_numpy()
 
     # Cut off pre-cycles
-    voltage_data = cut_off_step(voltage_data)
+    voltage_data = cut_off_step(voltage_data, helper_parameters)
 
     num_data_points = len(voltage_data[:, 0])
     lower_voltages = []
