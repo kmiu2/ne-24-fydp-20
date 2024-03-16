@@ -5,7 +5,7 @@ import numpy as np
 from analysis.helper import cut_off_cycle
 
 
-def discharge_capacity(df_cycle, mass, voltage, helper_parameters):
+def discharge_capacity(df_cycle, mass, voltage, helper_parameters, save_plots):
     # Get data from each column
     cycle_data = df_cycle[["Cycle", "CapC", "CapD"]].to_numpy()
 
@@ -23,6 +23,7 @@ def discharge_capacity(df_cycle, mass, voltage, helper_parameters):
     y = wh_cycle_data / mass
 
     # Plotting
+    plt.clf()
     plt.plot(
         x,
         y,
@@ -34,4 +35,7 @@ def discharge_capacity(df_cycle, mass, voltage, helper_parameters):
     plt.ylabel("Specific Discharge Capacity (Wh/kg)")
     plt.title("Capacity vs. Cycles")
     plt.grid()
-    plt.show()
+    if save_plots:
+        plt.savefig("discharge_capacity.png", dpi=300, bbox_inches="tight")
+    else:
+        plt.show()

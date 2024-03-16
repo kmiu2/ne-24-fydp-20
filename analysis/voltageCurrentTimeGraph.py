@@ -3,7 +3,7 @@ import numpy as np
 from analysis.helper import cut_off_record
 
 
-def voltage_time(df_record, helper_parameters):
+def voltage_time(df_record, helper_parameters, save_plots):
     # Get data from each column
     record_data = df_record[["Cycle Count", "Voltage"]].to_numpy()
 
@@ -18,6 +18,7 @@ def voltage_time(df_record, helper_parameters):
     x = time_interval * np.arange(record_data.size)
 
     # Plotting
+    plt.clf()
     plt.plot(
         x,
         record_data,
@@ -27,10 +28,13 @@ def voltage_time(df_record, helper_parameters):
     plt.ylabel("Voltage (V)")
     plt.title("Voltage vs. Time")
     plt.grid()
-    plt.show()
+    if save_plots:
+        plt.savefig("voltage_time.png", dpi=300, bbox_inches="tight")
+    else:
+        plt.show()
 
 
-def current_time(df_record, helper_parameters):
+def current_time(df_record, helper_parameters, save_plots):
     # Get data from each column
     record_data = df_record[["Cycle Count", "Current"]].to_numpy()
 
@@ -45,6 +49,7 @@ def current_time(df_record, helper_parameters):
     x = time_interval * np.arange(record_data.size)
 
     # Plotting
+    plt.clf()
     plt.plot(
         x,
         record_data,
@@ -54,4 +59,7 @@ def current_time(df_record, helper_parameters):
     plt.ylabel("Current (mA)")
     plt.title("Current vs. Time")
     plt.grid()
-    plt.show()
+    if save_plots:
+        plt.savefig("current_time.png", dpi=300, bbox_inches="tight")
+    else:
+        plt.show()

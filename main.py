@@ -5,11 +5,12 @@
 
 data = [
     {
-        "file_name": "57_life.xlsx",
-        "mass_mg": 32.80,
-    }
+        "file_name": "56_life.xlsx",
+        "mass_mg": 32.4,
+    },
 ]  # Data is an array, which means you can put run multiple data files in one go
 show_plots = True
+save_plots = True
 custom_voltage = 0  # Set a different voltage. If 0, it will take max voltage
 num_pre_cycles = 0  # Number of precycles to remove from start
 
@@ -68,11 +69,13 @@ for d in data:
 
     # Plotting
     if show_plots:
-        voltage_time(df_record, helper_parameters)
-        capacity_voltage(df_step, helper_parameters)
-        current_time(df_record, helper_parameters)
-        discharge_capacity(df_cycle, mass_kg, max_voltage, helper_parameters)
-        columbic_efficiency(df_cycle, helper_parameters)
-        # capacity_graph(df_record, mass_kg, helper_parameters)
+        voltage_time(df_record, helper_parameters, save_plots)
+        capacity_voltage(df_step, helper_parameters, save_plots)
+        current_time(df_record, helper_parameters, save_plots)
+        discharge_capacity(
+            df_cycle, mass_kg, max_voltage, helper_parameters, save_plots
+        )
+        columbic_efficiency(df_cycle, helper_parameters, save_plots)
+        capacity_graph(df_record, mass_kg, helper_parameters, save_plots)
 
     print("------------------------------")
