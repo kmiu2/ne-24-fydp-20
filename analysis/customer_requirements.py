@@ -16,6 +16,7 @@ from scipy.integrate import simpson
 
 
 def print_customer_requirements(
+    is_anode,
     df_cycle,
     df_record,
     df_step,
@@ -36,24 +37,6 @@ def print_customer_requirements(
     record_data = cut_off_cycle(record_data, helper_parameters)
 
     print("\n---------- Customer Requirements ----------")
-    ## Gravimetric Energy Density
-    # - Wh = mAh * V / 1000
-    # - Wh/kg = Wh / kg
-
-    # Get the larger of CapC and CapD
-    capacities = []
-    for cycle in cycle_data:
-        capacities.append(max(cycle[1], cycle[2]))
-
-    wh_cycle_data = np.array(capacities) * voltage / 1000
-    gravimetric_energy_density = wh_cycle_data / mass
-    print(
-        f"Max Gravimetric Energy Density: {np.max(gravimetric_energy_density):.2f} Wh/kg"
-    )
-    print(
-        f"Avg Gravimetric Energy Density: {np.mean(gravimetric_energy_density):.2f} Wh/kg"
-    )
-
     ## Cycle Life
     # - Loop through all entries
     # - Take the larger of CapC and CapD as the denominator
@@ -72,9 +55,10 @@ def print_customer_requirements(
     print(f"\nAvg Coulombic Efficiency: {(avg_coulombic_efficiency):.5f}%")
     print(f"Cycle Life: {cycle_life:.2f} cycles")
 
-    ## Energy Efficiency and Charge Rate
+    ## Energy Efficiency, Charge Rate, Energy Density
     # - Integral [across 1 cycle] of (Current x Voltage x dt)
     # - Charge Rate = Energy / Time
+    # - Energy Density = Energy / Mass
 
     # Get index of each new charge cycle
     cycle_indices = []
@@ -101,18 +85,22 @@ def print_customer_requirements(
         cycle_voltage = record_data[start:end, 2]  # V
         time_interval = 10  # seconds
         time = time_interval * np.arange(cycle_current.size)
+        time = time / 3600  # hours
 
         # Calculate energies
         energy = simpson(abs(cycle_current * cycle_voltage), time)  # Wh
         energies.append(energy)
 
         # Also calculate time
-        run_time = time[-1] / 3600  # hours
+        run_time = time[-1]
         run_times.append(run_time)
 
-    # Calculate energy efficiencies and charge rates
+    # Calculate energy efficiencies, charge rates, energy densities
     energy_efficiencies = []
     charge_rates = []
+    discharge_energy_densities = []
+    charge_energy_densities = []
+
     for i in range(0, len(energies) - 1, 2):
         # Energy Efficiency = (Energy in CCD) / (Energy in CCC)
         energy_ccd = energies[i + 1]
@@ -124,8 +112,39 @@ def print_customer_requirements(
         charge_rate = energies[i] / run_times[i]
         charge_rates.append(charge_rate)
 
-    avg_energy_efficiency = np.mean(energy_efficiencies) * 100
-    print(f"\nAvg Energy Efficiency: {avg_energy_efficiency:.2f}%")
+        # Energy Density = Energy / Mass
+        discharge_energy_density = energy_ccd / mass
+        charge_energy_density = energy_ccc / mass
+        discharge_energy_densities.append(discharge_energy_density)
+        charge_energy_densities.append(charge_energy_density)
 
-    avg_charge_rate = np.mean(charge_rates)
-    print(f"\nAvg Charge Rate: {avg_charge_rate:.2f} W")
+    print(f"\nMax Charge Rate: {np.max(charge_rates):.4f} W")
+    print(f"Avg Charge Rate: {np.mean(charge_rates):.4f} W")
+
+    if is_anode:
+        # Get the larger of CapC and CapD
+        capacities = []
+        for cycle in cycle_data:
+            capacities.append(max(cycle[1], cycle[2]))
+
+        wh_cycle_data = np.array(capacities) * voltage / 1000
+        gravimetric_energy_density = wh_cycle_data / mass
+        print(
+            f"Max Gravimetric Energy Density: {np.max(gravimetric_energy_density):.2f} Wh/kg"
+        )
+        print(
+            f"Avg Gravimetric Energy Density: {np.mean(gravimetric_energy_density):.2f} Wh/kg"
+        )
+    else:
+        print(
+            f"\nMax Discharge Gravimetric Energy Density: {np.mean(discharge_energy_densities):.2f} Wh/kg"
+        )
+        print(
+            f"Avg Discharge Gravimetric Energy Density: {np.mean(discharge_energy_densities):.2f} Wh/kg"
+        )
+        print(
+            f"\nMax Charge Gravimetric Energy Density: {np.mean(charge_energy_densities):.2f} Wh/kg"
+        )
+        print(
+            f"Avg Charge Gravimetric Energy Density: {np.mean(charge_energy_densities):.2f} Wh/kg"
+        )

@@ -5,13 +5,15 @@
 
 data = [
     {
-        "file_name": "56_life.xlsx",
-        "mass_mg": 32.4,
+        "file_name": "68_life.xlsx",
+        "mass_mg": 21.8,
     },
 ]  # Data is an array, which means you can put run multiple data files in one go
-show_plots = True
-save_plots = True
-custom_voltage = 0  # Set a different voltage. If 0, it will take max voltage
+is_anode = False
+custom_voltage = 0  # Set voltages for anodes 3
+
+show_plots = False
+save_plots = False
 num_pre_cycles = 0  # Number of precycles to remove from start
 
 #################################################
@@ -64,7 +66,7 @@ for d in data:
 
     # Customer Requirements
     print_customer_requirements(
-        df_cycle, df_record, df_step, mass_kg, max_voltage, helper_parameters
+        is_anode, df_cycle, df_record, df_step, mass_kg, max_voltage, helper_parameters
     )
 
     # Plotting
