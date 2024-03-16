@@ -5,13 +5,13 @@
 
 data = [
     {
-        "file_name": "49_life.xlsx",
-        "mass_mg": 10.00,
+        "file_name": "57_life.xlsx",
+        "mass_mg": 32.80,
     }
 ]  # Data is an array, which means you can put run multiple data files in one go
 show_plots = True
 custom_voltage = 0  # Set a different voltage. If 0, it will take max voltage
-num_pre_cycles = 5  # Number of precycles to remove from start
+num_pre_cycles = 0  # Number of precycles to remove from start
 
 #################################################
 ################### Main Code ###################

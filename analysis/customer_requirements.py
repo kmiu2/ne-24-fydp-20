@@ -115,7 +115,9 @@ def print_customer_requirements(
     charge_rates = []
     for i in range(0, len(energies) - 1, 2):
         # Energy Efficiency = (Energy in CCD) / (Energy in CCC)
-        energy_efficiency = energies[i + 1] / energies[i]
+        energy_ccd = energies[i + 1]
+        energy_ccc = energies[i]
+        energy_efficiency = min(energy_ccd, energy_ccc) / max(energy_ccd, energy_ccc)
         energy_efficiencies.append(energy_efficiency)
 
         # Charge Rate = Energy / Time
