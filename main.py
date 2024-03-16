@@ -5,15 +5,33 @@
 
 data = [
     {
-        "file_name": "18_life.xlsx",
-        "mass_mg": 10.10,
-    }
+        "file_name": "68_life.xlsx",
+        "mass_mg": 21.8,
+    },
 ]  # Data is an array, which means you can put run multiple data files in one go
-show_plots = True
-custom_voltage = 0  # Set a different voltage. If 0, it will take 95% of max voltage
+is_anode = False
+custom_voltage = 0  # Set voltages for anodes 3
+
+show_plots = False
+save_plots = False
+num_pre_cycles = 0  # Number of precycles to remove from start
 
 #################################################
 ################### Main Code ###################
+default_helper_parameters = {
+    "remove_from_start": 1,  # Removes last incomplete cycle
+    "remove_from_end": 1,  # Removes first incomplete cycle
+    "num_lifetime_cycles": 1000,
+    "custom_range": False,  # If True, will use custom_start and custom_num_cycles
+    "custom_start": 2,  # Starting at cycle N
+    "custom_num_cycles": 1,  # Number of cycles to include
+}
+
+helper_parameters = default_helper_parameters
+helper_parameters["remove_from_start"] = (
+    helper_parameters["remove_from_start"] + num_pre_cycles
+)
+
 import pandas as pd
 from analysis.customer_requirements import print_customer_requirements
 from analysis.chargeDischargeGraph import capacity_graph, capacity_voltage
@@ -40,22 +58,26 @@ for d in data:
     if custom_voltage != 0:
         max_voltage = custom_voltage
     else:
-        max_voltage = record_data.max() * 0.95
+        max_voltage = record_data.max()
 
     print(f"Mass: {(mass_kg * 1e6):.2f} mg")
     print(f"Voltage: {max_voltage:.2f} V")
     print(f"Number of cycles that ran: {len(df_cycle)}")
 
     # Customer Requirements
-    print_customer_requirements(df_cycle, df_record, df_step, mass_kg, max_voltage)
+    print_customer_requirements(
+        is_anode, df_cycle, df_record, df_step, mass_kg, max_voltage, helper_parameters
+    )
 
     # Plotting
     if show_plots:
-        voltage_time(df_record)
-        capacity_voltage(df_step)
-        current_time(df_record)
-        discharge_capacity(df_cycle, mass_kg, max_voltage)
-        columbic_efficiency(df_cycle)
-        # capacity_graph(df_record, mass)
+        voltage_time(df_record, helper_parameters, save_plots)
+        capacity_voltage(df_step, helper_parameters, save_plots)
+        current_time(df_record, helper_parameters, save_plots)
+        discharge_capacity(
+            df_cycle, mass_kg, max_voltage, helper_parameters, save_plots
+        )
+        columbic_efficiency(df_cycle, helper_parameters, save_plots)
+        capacity_graph(df_record, mass_kg, helper_parameters, save_plots)
 
     print("------------------------------")

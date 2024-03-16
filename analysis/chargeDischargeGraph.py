@@ -5,14 +5,14 @@ from analysis.helper import cut_off_record, cut_off_step
 cm = plt.colormaps["hsv"]
 
 
-def capacity_graph(df_record, mass):
+def capacity_graph(df_record, mass, helper_parameters, save_plots):
     # Get data from each column
     record_data = df_record[
-        ["Capacity", "Voltage", "Step", "Step Mode", "Cycle Count"]
+        ["Cycle Count", "Capacity", "Voltage", "Step", "Step Mode"]
     ].to_numpy()
 
     # Cut off pre-cycles
-    record_data = cut_off_record(record_data)
+    record_data = cut_off_record(record_data, helper_parameters)
 
     # Set variables
     num_data_points = len(record_data[:, 0])
@@ -20,6 +20,7 @@ def capacity_graph(df_record, mass):
     cycle_data = np.zeros([1, 2])
 
     # Subplots for linear and log scale
+    plt.clf()
     fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(12, 6))
     fig.suptitle("Charge/Discharge Cycles")
     ax[0].set_xlabel("Specific Capacity (mAh/kg)")
@@ -30,8 +31,8 @@ def capacity_graph(df_record, mass):
 
     # Loop through each data point
     for i in range(num_data_points - 1):
-        current_cycle_type = record_data[i, 3]
-        previous_cycle_type = record_data[i - 1, 3]
+        current_cycle_type = record_data[i, 4]
+        previous_cycle_type = record_data[i - 1, 4]
 
         # Get data for charge/discharge cycles
         if current_cycle_type == "CCD" or current_cycle_type == "CCC":
@@ -42,27 +43,29 @@ def capacity_graph(df_record, mass):
 
             # Add the data point to the cycle data
             cycle_data = np.concatenate(
-                (cycle_data, [[record_data[i, 0] / mass, record_data[i, 1]]])
+                (cycle_data, [[record_data[i, 1] / mass, record_data[i, 2]]])
             )
 
             # If it's the last data point of the cycle, plot the cycle
-            if record_data[i + 1, 3] != current_cycle_type:
+            if record_data[i + 1, 4] != current_cycle_type:
                 ax[0].plot(cycle_data[1:, 0], cycle_data[1:, 1], color=cm(half_cycles))
                 ax[1].plot(cycle_data[1:, 0], cycle_data[1:, 1], color=cm(half_cycles))
 
-    print("Cycle count: " + str(half_cycles / 2))
     plt.grid()
 
     # Plotting
-    plt.show()
+    if save_plots:
+        plt.savefig("capacity_voltage.png", dpi=300, bbox_inches="tight")
+    else:
+        plt.show()
 
 
-def capacity_voltage(df):
+def capacity_voltage(df, helper_parameters, save_plots):
     # Get data from each column
     voltage_data = df[["Step", "Mode", "StartVolt", "EndVolt"]].to_numpy()
 
     # Cut off pre-cycles
-    voltage_data = cut_off_step(voltage_data, remove_one=True)
+    voltage_data = cut_off_step(voltage_data, helper_parameters)
 
     num_data_points = len(voltage_data[:, 0])
     lower_voltages = []
@@ -86,10 +89,14 @@ def capacity_voltage(df):
     cycle_count = np.arange(1, (len(lower_voltages)) / 2 + 1, 0.5)
 
     # Plotting
+    plt.clf()
     plt.plot(cycle_count, lower_voltages, color="blue")
     # plt.plot(cycle_count, upper_voltages, color="red")
     plt.xlabel("Cycle")
     plt.ylabel("Voltage (V)")
     plt.title("Voltage vs. Cycle")
     plt.grid()
-    plt.show()
+    if save_plots:
+        plt.savefig("voltage_cycle.png", dpi=300, bbox_inches="tight")
+    else:
+        plt.show()

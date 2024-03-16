@@ -1,20 +1,17 @@
-# Variables
-remove_from_start = 0
-remove_from_end = 0
-num_lifetime_cycles = 1000
-
-custom_range = False
-custom_start = 1  # Starting at cycle N
-custom_num_cycles = 1  # Number of cycles to include
-
-
-def cut_off_step(data, remove_one=False):
-    if remove_one:
-        remove_from_start = 1
-        remove_from_end = 1
-
-    # Cut off cycles
-    data = data[(remove_from_start * 2) : (len(data) - remove_from_end * 2), :]
+def cut_off_step(data, helper_parameters):
+    (
+        remove_from_start,
+        remove_from_end,
+        custom_range,
+        custom_start,
+        custom_num_cycles,
+    ) = (
+        helper_parameters["remove_from_start"],
+        helper_parameters["remove_from_end"],
+        helper_parameters["custom_range"],
+        helper_parameters["custom_start"],
+        helper_parameters["custom_num_cycles"],
+    )
 
     # Viewing N cycles
     if custom_range:
@@ -22,57 +19,79 @@ def cut_off_step(data, remove_one=False):
         end = start + custom_num_cycles * 2
         data = data[start:end, :]
 
+    # Cut off cycles
+    else:
+        data = data[(remove_from_start * 2) : (len(data) - remove_from_end * 2), :]
+
     return data
 
 
-def cut_off_record(data):
+def cut_off_record(data, helper_parameters):
+    (
+        remove_from_start,
+        remove_from_end,
+        custom_range,
+        custom_start,
+        custom_num_cycles,
+    ) = (
+        helper_parameters["remove_from_start"],
+        helper_parameters["remove_from_end"],
+        helper_parameters["custom_range"],
+        helper_parameters["custom_start"],
+        helper_parameters["custom_num_cycles"],
+    )
+
     # Cut off cycles
-    if remove_from_start > 0:
-        start = 0
-        end = 0
-        # Find index of first cycle count of pre_cycles + 1
-        # Last index is just the cycle before the last cycle. For example, 1003 if there are 1000 lifetime cycles and 4 pre-cycles
-        # Cycle count is last column
-        for i in range(len(data[:, -1])):
-            if start == 0 and data[i, -1] == (remove_from_start + 1):
-                start = i
-            elif data[i, -1] == (remove_from_start + num_lifetime_cycles):
-                end = i
-                break
-        data = data[start:end, :]
+    # - Use the column "Cycle Count" (column 0), remove the first and last N cycles
+    # - For first n, if "Cycle Count" value <= remove_from_start, remove it
+    # - For last n, if "Cycle Count" value > (max - remove_from_end), remove it
+    max_cycle = data[-1, 0]
 
     # Viewing N cycles
     if custom_range:
-        # Find first index of first cycle count of custom_start + 1
-        # Find last index of first cycle count of custom_start + custom_num_cycles + 1
-        # Cycle count is last column
         start = 0
         end = 0
-        for i in range(len(data[:, -1])):
-            if start == 0 and data[i, -1] == (custom_start + 1):
+        for i in range(len(data[:, 0])):
+            if start == 0 and data[i, 0] == custom_start:
                 start = i
-            elif data[i, -1] == (custom_start + custom_num_cycles + 1):
+            elif data[i, 0] == (custom_start + custom_num_cycles):
                 end = i
                 break
-        data = data[start:end, :]
 
-    return data
+    else:
+        for i in range(len(data[:, 0])):
+            if data[i, 0] <= remove_from_start:
+                start = i
+            if data[i, 0] > (max_cycle - remove_from_end):
+                end = i
+                break
+
+    return data[start:end, :]
 
 
-def cut_off_cycle(data, remove_one=False, remove_dead_cycles=False):
-    if remove_one:
-        remove_from_start = 1
-        remove_from_end = 1
-
-    # Cut off cycles
-    # if remove_dead_cycles:
-
-    data = data[remove_from_start : (len(data) - remove_from_end), :]
+def cut_off_cycle(data, helper_parameters):
+    (
+        remove_from_start,
+        remove_from_end,
+        custom_range,
+        custom_start,
+        custom_num_cycles,
+    ) = (
+        helper_parameters["remove_from_start"],
+        helper_parameters["remove_from_end"],
+        helper_parameters["custom_range"],
+        helper_parameters["custom_start"],
+        helper_parameters["custom_num_cycles"],
+    )
 
     # Viewing N cycles
     if custom_range:
         start = remove_from_start + custom_start
         end = start + custom_num_cycles
         data = data[start:end, :]
+
+    # Cut off cycles
+    else:
+        data = data[remove_from_start : (len(data) - remove_from_end), :]
 
     return data

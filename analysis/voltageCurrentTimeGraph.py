@@ -3,21 +3,22 @@ import numpy as np
 from analysis.helper import cut_off_record
 
 
-def voltage_time(df_record):
+def voltage_time(df_record, helper_parameters, save_plots):
     # Get data from each column
-    record_data = df_record[["Voltage", "Cycle Count"]].to_numpy()
+    record_data = df_record[["Cycle Count", "Voltage"]].to_numpy()
 
     # Cut off pre-cycles
-    record_data = cut_off_record(record_data)
+    record_data = cut_off_record(record_data, helper_parameters)
 
-    # Remove cycle count column
-    record_data = record_data[:, 0]
+    # Get voltage data
+    record_data = record_data[:, 1]
 
     # Create x-axis
     time_interval = 10  # seconds
     x = time_interval * np.arange(record_data.size)
 
     # Plotting
+    plt.clf()
     plt.plot(
         x,
         record_data,
@@ -27,24 +28,28 @@ def voltage_time(df_record):
     plt.ylabel("Voltage (V)")
     plt.title("Voltage vs. Time")
     plt.grid()
-    plt.show()
+    if save_plots:
+        plt.savefig("voltage_time.png", dpi=300, bbox_inches="tight")
+    else:
+        plt.show()
 
 
-def current_time(df_record):
+def current_time(df_record, helper_parameters, save_plots):
     # Get data from each column
-    record_data = df_record[["Current", "Cycle Count"]].to_numpy()
+    record_data = df_record[["Cycle Count", "Current"]].to_numpy()
 
     # Cut off pre-cycles
-    record_data = cut_off_record(record_data)
+    record_data = cut_off_record(record_data, helper_parameters)
 
-    # Remove cycle count column
-    record_data = record_data[:, 0]
+    # Get current data
+    record_data = record_data[:, 1]
 
     # Create x-axis
     time_interval = 10  # seconds
     x = time_interval * np.arange(record_data.size)
 
     # Plotting
+    plt.clf()
     plt.plot(
         x,
         record_data,
@@ -54,4 +59,7 @@ def current_time(df_record):
     plt.ylabel("Current (mA)")
     plt.title("Current vs. Time")
     plt.grid()
-    plt.show()
+    if save_plots:
+        plt.savefig("current_time.png", dpi=300, bbox_inches="tight")
+    else:
+        plt.show()
