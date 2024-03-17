@@ -29,7 +29,7 @@ def voltage_time(df_record, helper_parameters, save_plots):
     plt.title("Voltage vs. Time")
     plt.grid()
     if save_plots:
-        plt.savefig("voltage_time.png", dpi=300, bbox_inches="tight")
+        plt.savefig("graphs/voltage_time.png", dpi=300, bbox_inches="tight")
     else:
         plt.show()
 
@@ -60,6 +60,6 @@ def current_time(df_record, helper_parameters, save_plots):
     plt.title("Current vs. Time")
     plt.grid()
     if save_plots:
-        plt.savefig("current_time.png", dpi=300, bbox_inches="tight")
+        plt.savefig("graphs/current_time.png", dpi=300, bbox_inches="tight")
     else:
         plt.show()

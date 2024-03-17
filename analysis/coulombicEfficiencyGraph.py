@@ -34,6 +34,6 @@ def columbic_efficiency(df_cycle, helper_parameters, save_plots):
     plt.title("Efficiency vs. Cycles")
     plt.grid()
     if save_plots:
-        plt.savefig("columbic_efficiency.png", dpi=300, bbox_inches="tight")
+        plt.savefig("graphs/columbic_efficiency.png", dpi=300, bbox_inches="tight")
     else:
         plt.show()

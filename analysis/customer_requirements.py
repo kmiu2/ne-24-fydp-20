@@ -1,5 +1,5 @@
 import numpy as np
-from analysis.helper import cut_off_cycle
+from analysis.helper import cut_off_cycle, cut_off_record
 from scipy.integrate import simpson
 
 ## Customer Requirements
@@ -34,7 +34,7 @@ def print_customer_requirements(
     # Cut off pre-cycles
     # Also remove last cycle since its incomplete
     cycle_data = cut_off_cycle(cycle_data, helper_parameters)
-    record_data = cut_off_cycle(record_data, helper_parameters)
+    record_data = cut_off_record(record_data, helper_parameters)
 
     print("\n---------- Customer Requirements ----------")
     ## Cycle Life
@@ -52,7 +52,7 @@ def print_customer_requirements(
     # - Since: Remaining Capacity = Efficiency ^ Cycles
     # - Cycle Life = log(Remaining Capacity) / log(avg_coulombic_efficiency)
     cycle_life = np.log(0.8) / np.log(avg_coulombic_efficiency / 100)
-    print(f"\nAvg Coulombic Efficiency: {(avg_coulombic_efficiency):.5f}%")
+    print(f"Avg Coulombic Efficiency: {(avg_coulombic_efficiency):.5f}%")
     print(f"Cycle Life: {cycle_life:.2f} cycles")
 
     ## Energy Efficiency, Charge Rate, Energy Density
@@ -99,7 +99,6 @@ def print_customer_requirements(
     energy_efficiencies = []
     charge_rates = []
     discharge_energy_densities = []
-    charge_energy_densities = []
 
     for i in range(0, len(energies) - 1, 2):
         # Energy Efficiency = (Energy in CCD) / (Energy in CCC)
@@ -114,37 +113,26 @@ def print_customer_requirements(
 
         # Energy Density = Energy / Mass
         discharge_energy_density = energy_ccd / mass
-        charge_energy_density = energy_ccc / mass
         discharge_energy_densities.append(discharge_energy_density)
-        charge_energy_densities.append(charge_energy_density)
 
     print(f"\nMax Charge Rate: {np.max(charge_rates):.4f} W")
     print(f"Avg Charge Rate: {np.mean(charge_rates):.4f} W")
+    print(f"\nMax Energy Efficiency: {(np.max(energy_efficiencies)*100):.2f}%")
+    print(f"Avg Energy Efficiency: {(np.mean(energy_efficiencies)*100):.2f}%")
 
     if is_anode:
-        # Get the larger of CapC and CapD
-        capacities = []
-        for cycle in cycle_data:
-            capacities.append(max(cycle[1], cycle[2]))
-
-        wh_cycle_data = np.array(capacities) * voltage / 1000
+        wh_cycle_data = np.array(cycle[1]) * voltage / 1000
         gravimetric_energy_density = wh_cycle_data / mass
         print(
-            f"Max Gravimetric Energy Density: {np.max(gravimetric_energy_density):.2f} Wh/kg"
+            f"\nMax Gravimetric Energy Density: {np.max(gravimetric_energy_density):.2f} Wh/kg"
         )
         print(
             f"Avg Gravimetric Energy Density: {np.mean(gravimetric_energy_density):.2f} Wh/kg"
         )
     else:
         print(
-            f"\nMax Discharge Gravimetric Energy Density: {np.mean(discharge_energy_densities):.2f} Wh/kg"
+            f"\nMax Gravimetric Energy Density: {np.mean(discharge_energy_densities):.2f} Wh/kg"
         )
         print(
-            f"Avg Discharge Gravimetric Energy Density: {np.mean(discharge_energy_densities):.2f} Wh/kg"
-        )
-        print(
-            f"\nMax Charge Gravimetric Energy Density: {np.mean(charge_energy_densities):.2f} Wh/kg"
-        )
-        print(
-            f"Avg Charge Gravimetric Energy Density: {np.mean(charge_energy_densities):.2f} Wh/kg"
+            f"Avg Gravimetric Energy Density: {np.mean(discharge_energy_densities):.2f} Wh/kg"
         )

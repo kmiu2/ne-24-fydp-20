@@ -63,7 +63,7 @@ def cut_off_record(data, helper_parameters):
             if data[i, 0] <= remove_from_start:
                 start = i
             if data[i, 0] > (max_cycle - remove_from_end):
-                end = i
+                end = i - 1
                 break
 
     return data[start:end, :]

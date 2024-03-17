@@ -55,7 +55,7 @@ def capacity_graph(df_record, mass, helper_parameters, save_plots):
 
     # Plotting
     if save_plots:
-        plt.savefig("capacity_voltage.png", dpi=300, bbox_inches="tight")
+        plt.savefig("graphs/capacity_voltage.png", dpi=300, bbox_inches="tight")
     else:
         plt.show()
 
@@ -97,6 +97,6 @@ def capacity_voltage(df, helper_parameters, save_plots):
     plt.title("Voltage vs. Cycle")
     plt.grid()
     if save_plots:
-        plt.savefig("voltage_cycle.png", dpi=300, bbox_inches="tight")
+        plt.savefig("graphs/voltage_cycle.png", dpi=300, bbox_inches="tight")
     else:
         plt.show()
