@@ -6,14 +6,14 @@ Created on Tue Mar  5 13:12:46 2024
 """
 # input parameters based on the test battery
 #  Cathode and Anode Performance
-cathodeEnergyDensity = 100 # Wh/kg
-anodeEnergyDensity = 195 # Wh/kg
+cathodeEnergyDensity = 21.61 # Wh/kg
+anodeEnergyDensity = 233.2 # Wh/kg
 #  Cathode and Anode Film and Substrate properties
 anodeMass = 10.7 # mg - weight of the whole electrode (active material + susbstrate)
-cathodeMass = 21.8 # mg - weight of the whole electrode (active material + susbstrate)
+cathodeMass = 32.4 # mg - weight of the whole electrode (active material + susbstrate)
 anodeSubstrateMass = 8.5 # mg - estimated weight of either the Cu or Al foil the anode is deposited on
 cathodeSubstrateMass = 8.5 # mg - estimated weight of either the Cu or Al foil the cathode is deposited on
-cathodeActiveMaterial = 0.5 # _ - decimal for the volume % of active material used in the cathode
+cathodeActiveMaterial = 0.475 # _ - decimal for the volume % of active material used in the cathode
 #  Coating Recipe Details
 #   Anode
 CBinAnode = 0.75 # g/g_totalSolid
@@ -28,8 +28,7 @@ PBAinCathode = 0.475 # weight fraction to total solids
 TritonXinCathode = 0.01 # v% in solution
 CathodeSolnVolume = 15 # mL volume total of liquids
 #   Alternative Cathode Performance Parameters for full cell performance
-useAlt = True # sets if the alternative enrgy density should be used
-CathActEnergyDensityAlt  = 180 # Wh/kg, alternative active material energy density to be used
+CathActEnergyDensityAlt  = 157/0.7 # Wh/kg, alternative active material energy density to be used
 CathActR = 0.97 # weight fraction active material
 condcFillerR = 0.02 # weight fraction conductive filler
 
@@ -38,8 +37,8 @@ condcFillerR = 0.02 # weight fraction conductive filler
 
 # input parameters based on outside sources
 # costs
-carbonBlackCost = 24 # $/kg
-PBA_precursorsCost = (9.35*4 + 5.275*2)/5.5 # CuSO4 + pottatium ferrocyanide over product yield $/kg
+carbonBlackCost = 2.2046 # $/kg
+PBA_precursorsCost = (9.35*1 + 5.275*1)/5.5 # CuSO4 + pottatium ferrocyanide over product yield $/kg
 AlFoilCost = 2.10 #USD / kg
 CuFoilCost = 0.0 #note units for this when I source it /// dont need this
 NaCMCsCost = 0.3 # $/kg
@@ -139,9 +138,9 @@ def pouchCalcs (AED, AD, CED, CD, CathRecipe, l = pouch_L, w = pouch_W, h = pouc
     TM = PCM + CM + AM + SepM + CCM + EM
     #find energy stored
     Energy = CM*CED/1000
-    print(CED)
-    print(AED)
-    print(Energy)
+    # print(CED)
+    # print(AED)
+    # print(Energy)
     #find overall energy density
     BatGravED = Energy/TM*1000
     BatVolED = Energy/V
@@ -161,23 +160,68 @@ def pouchCalcs (AED, AD, CED, CD, CathRecipe, l = pouch_L, w = pouch_W, h = pouc
     #Conver Cost to CAD
     TotalCostCAD = TotalCost*CADfromUSD
     #Find cost per kWh
-    CostPerKWh = TotalCostCAD/Energy*1000
-    
+    CostPerKWh = TotalCost/Energy*1000
+    #test code to analyze costs
     print(TotalCost)
+    print(CBC)
+    print(PBAC)
     
-    return (BatGravED, BatVolED, CostPerKWh)
+    #rough estimate on Charge rate
+    CathChargeRate = Energy*3/20
+    AnodeChargeRate = Energy/2
+        
+    return (BatGravED, BatVolED, CostPerKWh, CathChargeRate, AnodeChargeRate)
 
 
 OurBat = pouchCalcs(AnodeActEnergyDensity, AnodeDensity, CathActEnergyDensity*.45, 
                     CathodeDensity, [0.45, 0.45, 0.00, 0, 0.1])
 CNFBat = pouchCalcs(AnodeActEnergyDensity, AnodeDensity, CathActEnergyDensity*.87, 
                     CathodeDensity, [0.87, 0.02, 0.01, 0, 0.1])
+OurBatPW = pouchCalcs(AnodeActEnergyDensity, AnodeDensity, CathActEnergyDensityAlt*.45, 
+                    CathodeDensity, [0.45, 0.45, 0.00, 0, 0.1])
+CNFBatPW = pouchCalcs(AnodeActEnergyDensity, AnodeDensity, CathActEnergyDensityAlt*.87, 
+                    CathodeDensity, [0.87, 0.02, 0.01, 0, 0.1])
 
+print("\n-------------------------------------------------------------------------------")
+print("Pouch Cell Performance")
+print("Our Battery:")
+print(f"Gravimetric Energy Density:     {OurBat[0]} Wh/kg")
+print(f"Volumetric Energy Density:      {OurBat[1]} Wh/cm3")
+print(f"Cost Per Energy Stored:         {OurBat[2]} $/kWh")
+print(f"Estimated Cathode Charge Rate:  {OurBat[3]} W")
+print(f"Estimated Anode Charge Rate:    {OurBat[4]} W\n")
+print("----------------------------------------------------------")
+print("\nBattery Using CNFs and our PBA:")
+print(f"Gravimetric Energy Density:     {CNFBat[0]} Wh/kg")
+print(f"Volumetric Energy Density:      {CNFBat[1]} Wh/cm3")
+print(f"Cost Per Energy Stored:         {CNFBat[2]} $/kWh")
+print(f"Estimated Cathode Charge Rate:  {CNFBat[3]} W")
+print(f"Estimated Anode Charge Rate:    {CNFBat[4]} W\n")
+print("----------------------------------------------------------")
+print("Our Battery but PW:")
+print(f"Gravimetric Energy Density:     {OurBatPW[0]} Wh/kg")
+print(f"Volumetric Energy Density:      {OurBatPW[1]} Wh/cm3")
+print(f"Cost Per Energy Stored:         {OurBatPW[2]} $/kWh")
+print(f"Estimated Cathode Charge Rate:  {OurBatPW[3]} W")
+print(f"Estimated Anode Charge Rate:    {OurBatPW[4]} W\n")
+print("----------------------------------------------------------")
+print("\nBattery Using CNFs and PW:")
+print(f"Gravimetric Energy Density:     {CNFBatPW[0]} Wh/kg")
+print(f"Volumetric Energy Density:      {CNFBatPW[1]} Wh/cm3")
+print(f"Cost Per Energy Stored:         {CNFBatPW[2]} $/kWh")
+print(f"Estimated Cathode Charge Rate:  {CNFBatPW[3]} W")
+print(f"Estimated Anode Charge Rate:    {CNFBatPW[4]} W\n")
 
-print(OurBat)
-print(CNFBat)
+print("-------------------------------------------------------------------------------\n")
+print("Active Material Details\n")
+print(f"Cathode Active Material Gravimetric Energy Denisty: {CathActEnergyDensity} Wh/kg")
+print(f"Anode Active Material Gravimetric Energy Denisty:   {AnodeActEnergyDensity} Wh/kg \n")
 
-print(f"Cathode Active Material Gravimetric Energy Denisty: {CathActEnergyDensity}")
+print(f"Cathode Active Material Gravimetric Energy Denisty: {CathActEnergyDensity*CathodeDensity/1000} Wh/cm3")
+print(f"Anode Active Material Gravimetric Energy Denisty:   {AnodeActEnergyDensity*AnodeDensity/1000} Wh/cm3\n")
+
+print("-------------------------------------------------------------------------------\n")
+print("Performance of Theoretical Cathode Coatings")
 print(f"Cathode With 90% Active Material Gravimetric Energy Denisty: {Cath90ActDensity}")
 print(f"Cathode With 97% Active Material Gravimetric Energy Denisty: {Cath97ActDensity}")
 
