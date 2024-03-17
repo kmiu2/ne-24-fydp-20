@@ -5,12 +5,12 @@
 
 data = [
     {
-        "file_name": "68_life.xlsx",
-        "mass_mg": 21.8,
+        "file_name": "52_life.xlsx",
+        "mass_mg": 28.60,
+        "is_anode": True,
     },
 ]  # Data is an array, which means you can put run multiple data files in one go
-is_anode = False
-custom_voltage = 0  # Set voltages for anodes 3
+custom_voltage = 0  # Set voltages to be 3 for anodes
 
 show_plots = False
 save_plots = False
@@ -42,6 +42,9 @@ from analysis.voltageCurrentTimeGraph import voltage_time, current_time
 # Plotting
 for d in data:
     path = "./data/" + d["file_name"]
+    is_anode = d["is_anode"]
+    if is_anode:
+        custom_voltage = 3  # Set voltages for anodes
 
     print(f"\n---------- Reading Data: {d['file_name']} ----------")
 
@@ -72,12 +75,18 @@ for d in data:
     # Plotting
     if show_plots:
         voltage_time(df_record, helper_parameters, save_plots)
-        capacity_voltage(df_step, helper_parameters, save_plots)
-        current_time(df_record, helper_parameters, save_plots)
         discharge_capacity(
-            df_cycle, mass_kg, max_voltage, helper_parameters, save_plots
+            is_anode,
+            df_cycle,
+            df_record,
+            mass_kg,
+            max_voltage,
+            helper_parameters,
+            save_plots,
         )
         columbic_efficiency(df_cycle, helper_parameters, save_plots)
-        capacity_graph(df_record, mass_kg, helper_parameters, save_plots)
+        # capacity_voltage(df_step, helper_parameters, save_plots)
+        # current_time(df_record, helper_parameters, save_plots)
+        # capacity_graph(df_record, mass_kg, helper_parameters, save_plots)
 
     print("------------------------------")
