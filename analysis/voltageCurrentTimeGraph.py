@@ -22,7 +22,7 @@ def voltage_time(df_record, helper_parameters, save_plots):
     plt.plot(
         x,
         record_data,
-        color="b",
+        color="#38761d",
     )
     plt.xlabel("Time (s)")
     plt.ylabel("Voltage (V)")
@@ -53,7 +53,7 @@ def current_time(df_record, helper_parameters, save_plots):
     plt.plot(
         x,
         record_data,
-        color="b",
+        color="#38761d",
     )
     plt.xlabel("Time (s)")
     plt.ylabel("Current (mA)")

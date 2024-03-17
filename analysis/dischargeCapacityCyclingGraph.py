@@ -61,7 +61,7 @@ def discharge_capacity(
 
     # Cut off the last extra x element if len(x) > len(y)
     if len(x) > len(y):
-        x = x[:-1]
+        x = x[: len(y)]
 
     # Plotting
     plt.clf()
@@ -70,7 +70,7 @@ def discharge_capacity(
         y,
         linestyle="-",
         marker="o",
-        color="b",
+        color="#38761d",
     )
     plt.xlabel("Cycle Number")
     plt.ylabel("Specific Discharge Capacity (Wh/kg)")

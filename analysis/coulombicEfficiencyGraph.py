@@ -27,7 +27,7 @@ def columbic_efficiency(df_cycle, helper_parameters, save_plots):
         adjusted_efficiencies,
         linestyle="-",
         marker="o",
-        color="b",
+        color="#38761d",
     )
     plt.xlabel("Cycle Number")
     plt.ylabel("Columbic Efficiency (%)")

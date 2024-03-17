@@ -46,11 +46,11 @@ def cut_off_record(data, helper_parameters):
     # - For first n, if "Cycle Count" value <= remove_from_start, remove it
     # - For last n, if "Cycle Count" value > (max - remove_from_end), remove it
     max_cycle = data[-1, 0]
+    start = 0
+    end = len(data)
 
     # Viewing N cycles
     if custom_range:
-        start = 0
-        end = 0
         for i in range(len(data[:, 0])):
             if start == 0 and data[i, 0] == custom_start:
                 start = i

@@ -5,14 +5,14 @@
 
 data = [
     {
-        "file_name": "52_life.xlsx",
-        "mass_mg": 28.60,
+        "file_name": "51_life.xlsx",
+        "mass_mg": 20.00,
         "is_anode": True,
     },
 ]  # Data is an array, which means you can put run multiple data files in one go
 custom_voltage = 0  # Set voltages to be 3 for anodes
 
-show_plots = False
+show_plots = True
 save_plots = False
 num_pre_cycles = 0  # Number of precycles to remove from start
 
@@ -54,7 +54,6 @@ for d in data:
     df_step = pd.read_excel(path, sheet_name="Step")
 
     # Get mass and max voltage
-    # - Take 90% of the max voltage
     mass_kg = 1e-6 * d["mass_mg"]  # kg
     record_data = df_record[["Voltage"]].to_numpy()
     max_voltage = 0
@@ -74,7 +73,7 @@ for d in data:
 
     # Plotting
     if show_plots:
-        voltage_time(df_record, helper_parameters, save_plots)
+        # voltage_time(df_record, helper_parameters, save_plots)
         discharge_capacity(
             is_anode,
             df_cycle,
@@ -84,9 +83,9 @@ for d in data:
             helper_parameters,
             save_plots,
         )
-        columbic_efficiency(df_cycle, helper_parameters, save_plots)
+        # columbic_efficiency(df_cycle, helper_parameters, save_plots)
         # capacity_voltage(df_step, helper_parameters, save_plots)
         # current_time(df_record, helper_parameters, save_plots)
-        # capacity_graph(df_record, mass_kg, helper_parameters, save_plots)
+        capacity_graph(df_record, mass_kg, helper_parameters, save_plots)
 
     print("------------------------------")

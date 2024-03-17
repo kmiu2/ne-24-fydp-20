@@ -2,8 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from analysis.helper import cut_off_record, cut_off_step
 
-cm = plt.colormaps["hsv"]
-
 
 def capacity_graph(df_record, mass, helper_parameters, save_plots):
     # Get data from each column
@@ -19,15 +17,12 @@ def capacity_graph(df_record, mass, helper_parameters, save_plots):
     half_cycles = 0  # Can use cycle count for legend if need be - definitely looks cluttered with too many cycles
     cycle_data = np.zeros([1, 2])
 
-    # Subplots for linear and log scale
+    # Plotting
     plt.clf()
-    fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(12, 6))
-    fig.suptitle("Charge/Discharge Cycles")
-    ax[0].set_xlabel("Specific Capacity (mAh/kg)")
-    ax[0].set_ylabel("Voltage (V)")
-    ax[1].set_xlabel("Specific Capacity (mAh/kg)")
-    ax[1].set_ylabel("Voltage (V)")
-    ax[1].set_xscale("log")
+    plt.xlabel("Specific Capacity (mAh/kg)")
+    plt.ylabel("Voltage (V)")
+    plt.title("Charge/Discharge Cycles")
+    plt.grid()
 
     # Loop through each data point
     for i in range(num_data_points - 1):
@@ -48,10 +43,7 @@ def capacity_graph(df_record, mass, helper_parameters, save_plots):
 
             # If it's the last data point of the cycle, plot the cycle
             if record_data[i + 1, 4] != current_cycle_type:
-                ax[0].plot(cycle_data[1:, 0], cycle_data[1:, 1], color=cm(half_cycles))
-                ax[1].plot(cycle_data[1:, 0], cycle_data[1:, 1], color=cm(half_cycles))
-
-    plt.grid()
+                plt.plot(cycle_data[1:, 0], cycle_data[1:, 1], color="#38761d")
 
     # Plotting
     if save_plots:
