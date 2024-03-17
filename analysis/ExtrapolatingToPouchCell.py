@@ -4,16 +4,17 @@ Created on Tue Mar  5 13:12:46 2024
 
 @author: David
 """
+import statistics
 # input parameters based on the test battery
 #  Cathode and Anode Performance
-cathodeEnergyDensity = 21.61 # Wh/kg
-anodeEnergyDensity = 233.2 # Wh/kg
+cathodeEnergyDensity = statistics.mean([10.87, 12.58, 12.97]) # Wh/kg
+anodeEnergyDensity = 400#statistics.mean([170.83, 125.44, 234.11]) # Wh/kg
 #  Cathode and Anode Film and Substrate properties
-anodeMass = 10.7 # mg - weight of the whole electrode (active material + susbstrate)
-cathodeMass = 32.4 # mg - weight of the whole electrode (active material + susbstrate)
-anodeSubstrateMass = 8.5 # mg - estimated weight of either the Cu or Al foil the anode is deposited on
-cathodeSubstrateMass = 8.5 # mg - estimated weight of either the Cu or Al foil the cathode is deposited on
-cathodeActiveMaterial = 0.475 # _ - decimal for the volume % of active material used in the cathode
+anodeMass = 10.225  # mg - weight of the whole electrode (active material + susbstrate)
+cathodeMass = statistics.mean([22.5, 22.1, 21.8]) # mg - weight of the whole electrode (active material + susbstrate)
+anodeSubstrateMass = 8.36 # mg - estimated weight of either the Cu or Al foil the anode is deposited on
+cathodeSubstrateMass = 8.36 # mg - estimated weight of either the Cu or Al foil the cathode is deposited on
+cathodeActiveMaterial = 0.45 # _ - decimal for the volume % of active material used in the cathode
 #  Coating Recipe Details
 #   Anode
 CBinAnode = 0.75 # g/g_totalSolid
@@ -38,7 +39,7 @@ condcFillerR = 0.02 # weight fraction conductive filler
 # input parameters based on outside sources
 # costs
 carbonBlackCost = 2.2046 # $/kg
-PBA_precursorsCost = (9.35*1 + 5.275*1)/5.5 # CuSO4 + pottatium ferrocyanide over product yield $/kg
+PBA_precursorsCost = (9.35*1*0.8333 + 5.275*1)/5.5 # CuSO4 + pottatium ferrocyanide over product yield $/kg
 AlFoilCost = 2.10 #USD / kg
 CuFoilCost = 0.0 #note units for this when I source it /// dont need this
 NaCMCsCost = 0.3 # $/kg
@@ -50,7 +51,7 @@ rGOCost = 122.5 # USD/g
 pouchCellMaterialCost = 0.38 #USD/m2
 seperatorCost = 3.04 # USD/m^2 : 31USD per roll / (6cm[roll Width]*170m[roll Length])
 CADfromUSD = 1.35 # multiplier to get from USD to CAD
-ElectrolyteCost = 3.2*0.937 + 0.10979*0.1*2 + 0.1695*0.9*2 # USD/L diglyme + USD/1L of 0.1M NaBF4 + USD/1L of 0.9M NaPF6
+ElectrolyteCost = 0.5*0.937 + 0.10979*0.1*2 + 0.1695*0.9*2 # USD/L diglyme + USD/1L of 0.1M NaBF4 + USD/1L of 0.9M NaPF6
 # Densities
 carbonBlackDensity = 0.160 # 
 PBADensity = 1.83 # g/cm^3
@@ -68,7 +69,7 @@ pouch_W = 5.0 # cm
 layers = 1
 # Pouch Cell Materials Dimensions
 CurrentCollectorThick = 0.0006 # cm
-SeparatorThick = 0.0025 # cm
+SeparatorThick = 0.002 # cm
 ElectrolytePerUnitArea = 0.075 # mL/cm^2 : this is ~3x what we use in a coin cell to be generous
 
 
@@ -163,8 +164,9 @@ def pouchCalcs (AED, AD, CED, CD, CathRecipe, l = pouch_L, w = pouch_W, h = pouc
     CostPerKWh = TotalCost/Energy*1000
     #test code to analyze costs
     print(TotalCost)
-    print(CBC)
+    print(ElectrolyteC)
     print(PBAC)
+    print(Energy)
     
     #rough estimate on Charge rate
     CathChargeRate = Energy*3/20
