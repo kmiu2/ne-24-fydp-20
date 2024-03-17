@@ -6,10 +6,10 @@ Created on Tue Mar  5 13:12:46 2024
 """
 # input parameters based on the test battery
 #  Cathode and Anode Performance
-cathodeEnergyDensity = 20 # Wh/kg
-anodeEnergyDensity = 131 # Wh/kg
+cathodeEnergyDensity = 100 # Wh/kg
+anodeEnergyDensity = 195 # Wh/kg
 #  Cathode and Anode Film and Substrate properties
-anodeMass = 9.9 # mg - weight of the whole electrode (active material + susbstrate)
+anodeMass = 10.7 # mg - weight of the whole electrode (active material + susbstrate)
 cathodeMass = 21.8 # mg - weight of the whole electrode (active material + susbstrate)
 anodeSubstrateMass = 8.5 # mg - estimated weight of either the Cu or Al foil the anode is deposited on
 cathodeSubstrateMass = 8.5 # mg - estimated weight of either the Cu or Al foil the cathode is deposited on
@@ -138,11 +138,12 @@ def pouchCalcs (AED, AD, CED, CD, CathRecipe, l = pouch_L, w = pouch_W, h = pouc
     EM = volE*electrolyteDensity
     TM = PCM + CM + AM + SepM + CCM + EM
     #find energy stored
-    Energy = CM*CED
+    Energy = CM*CED/1000
     print(CED)
     print(AED)
+    print(Energy)
     #find overall energy density
-    BatGravED = Energy/TM
+    BatGravED = Energy/TM*1000
     BatVolED = Energy/V
     #find costs in USD
     PBAC = CM*CathRecipe[0]*PBA_precursorsCost/1000
@@ -162,14 +163,19 @@ def pouchCalcs (AED, AD, CED, CD, CathRecipe, l = pouch_L, w = pouch_W, h = pouc
     #Find cost per kWh
     CostPerKWh = TotalCostCAD/Energy*1000
     
-    
+    print(TotalCost)
     
     return (BatGravED, BatVolED, CostPerKWh)
 
 
-OurBat = pouchCalcs(AnodeActEnergyDensity, AnodeDensity, CathActEnergyDensity*.87, CathodeDensity, [0.87, 0.01, 0.02, 0, 0.1])
+OurBat = pouchCalcs(AnodeActEnergyDensity, AnodeDensity, CathActEnergyDensity*.45, 
+                    CathodeDensity, [0.45, 0.45, 0.00, 0, 0.1])
+CNFBat = pouchCalcs(AnodeActEnergyDensity, AnodeDensity, CathActEnergyDensity*.87, 
+                    CathodeDensity, [0.87, 0.02, 0.01, 0, 0.1])
+
 
 print(OurBat)
+print(CNFBat)
 
 print(f"Cathode Active Material Gravimetric Energy Denisty: {CathActEnergyDensity}")
 print(f"Cathode With 90% Active Material Gravimetric Energy Denisty: {Cath90ActDensity}")
