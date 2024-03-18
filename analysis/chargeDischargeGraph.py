@@ -3,7 +3,13 @@ import matplotlib.pyplot as plt
 from analysis.helper import cut_off_record, cut_off_step
 
 
-def capacity_graph(df_record, mass, helper_parameters, save_plots):
+def capacity_graph(
+    df_record,
+    mass,
+    helper_parameters,
+    save_plots,
+    label,
+):
     # Get data from each column
     record_data = df_record[
         ["Cycle Count", "Capacity", "Voltage", "Step", "Step Mode"]
@@ -21,7 +27,7 @@ def capacity_graph(df_record, mass, helper_parameters, save_plots):
     plt.clf()
     plt.xlabel("Specific Capacity (mAh/kg)")
     plt.ylabel("Voltage (V vs Na/Na+)")
-    plt.title("Charge/Discharge Cycles")
+    plt.title(f"{label} Charge/Discharge Cycles")
     plt.grid()
 
     # Loop through each data point
@@ -48,7 +54,7 @@ def capacity_graph(df_record, mass, helper_parameters, save_plots):
     # Plotting
     if save_plots:
         plt.savefig(
-            "graphs/capacity_voltage.png",
+            f"graphs/{label}_capacity_voltage.png",
             dpi=300,
             bbox_inches="tight",
             transparent=True,

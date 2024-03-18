@@ -5,6 +5,13 @@
 
 data = [
     {
+        "file_name": "51_life.xlsx",
+        "mass_mg": 1.865,
+        "is_anode": True,
+        "color": "#38761d",
+        "label": "Anode",
+    },
+    {
         "file_name": "69_life.xlsx",
         "mass_mg": 13.44,
         "is_anode": False,
@@ -89,6 +96,12 @@ for d in data:
         # columbic_efficiency(df_cycle, helper_parameters, save_plots)
         # capacity_voltage(df_step, helper_parameters, save_plots)
         # current_time(df_record, helper_parameters, save_plots)
-        capacity_graph(df_record, mass_kg, helper_parameters, save_plots)
+        capacity_graph(
+            df_record,
+            mass_kg,
+            helper_parameters,
+            save_plots,
+            label=d["label"],
+        )
 
     print("------------------------------")
