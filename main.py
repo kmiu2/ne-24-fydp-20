@@ -76,16 +76,16 @@ for d in data:
     # Plotting
     if show_plots:
         # voltage_time(df_record, helper_parameters, save_plots)
-        # discharge_capacity(
-        #     is_anode,
-        #     df_cycle,
-        #     df_record,
-        #     mass_kg,
-        #     max_voltage,
-        #     helper_parameters,
-        #     save_plots,
-        #     label=d["label"],
-        # )
+        discharge_capacity(
+            is_anode,
+            df_cycle,
+            df_record,
+            mass_kg,
+            max_voltage,
+            helper_parameters,
+            save_plots,
+            label=d["label"],
+        )
         # columbic_efficiency(df_cycle, helper_parameters, save_plots)
         # capacity_voltage(df_step, helper_parameters, save_plots)
         # current_time(df_record, helper_parameters, save_plots)
