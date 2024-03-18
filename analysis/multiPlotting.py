@@ -7,14 +7,14 @@ from scipy.integrate import simpson
 data = [
     {
         "file_name": "51_life.xlsx",
-        "mass_mg": 20.00,
+        "mass_mg": 1.865,
         "is_anode": True,
         "color": "#38761d",
         "label": "Anode",
     },
     {
         "file_name": "69_life.xlsx",
-        "mass_mg": 21.80,
+        "mass_mg": 13.44,
         "is_anode": False,
         "color": "#7CA5B8",
         "label": "Cathode",
@@ -48,8 +48,14 @@ plt.figure()
 for d in data:
     path = "./data/" + d["file_name"]
     is_anode = d["is_anode"]
+
     if is_anode:
         custom_voltage = 3  # Set voltages for anodes
+        helper_parameters["custom_range"] = True
+        helper_parameters["custom_start"] = 0
+        helper_parameters["custom_num_cycles"] = 4
+    else:
+        helper_parameters["custom_range"] = False
 
     print(f"\n---------- Reading Data: {d['file_name']} ----------")
 
@@ -129,12 +135,17 @@ for d in data:
     )
 
 plt.xlabel("Cycle Number")
-plt.ylabel("Specific Discharge Capacity (Wh/kg)")
+plt.ylabel("Gravimetric Energy Density (Wh/kg_electrode)")
 plt.title("Capacity vs. Cycles")
 plt.grid()
 plt.legend()
 
 if save_plots:
-    plt.savefig("graphs/multi_discharge_capacity.png", dpi=300, bbox_inches="tight")
+    plt.savefig(
+        "graphs/multi_discharge_capacity.png",
+        dpi=300,
+        bbox_inches="tight",
+        transparent=True,
+    )
 else:
     plt.show()

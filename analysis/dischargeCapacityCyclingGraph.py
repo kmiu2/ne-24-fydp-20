@@ -14,6 +14,7 @@ def discharge_capacity(
     voltage,
     helper_parameters,
     save_plots,
+    label,
 ):
     # Get data from each column
     cycle_data = df_cycle[["Cycle", "CapC", "CapD"]].to_numpy()
@@ -73,10 +74,15 @@ def discharge_capacity(
         color="#38761d",
     )
     plt.xlabel("Cycle Number")
-    plt.ylabel("Specific Discharge Capacity (Wh/kg)")
+    plt.ylabel(f"Gravimetric Energy Density (Wh/kg_{label})")
     plt.title("Capacity vs. Cycles")
     plt.grid()
     if save_plots:
-        plt.savefig("graphs/discharge_capacity.png", dpi=300, bbox_inches="tight")
+        plt.savefig(
+            "graphs/discharge_capacity.png",
+            dpi=300,
+            bbox_inches="tight",
+            transparent=True,
+        )
     else:
         plt.show()

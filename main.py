@@ -5,15 +5,17 @@
 
 data = [
     {
-        "file_name": "51_life.xlsx",
-        "mass_mg": 20.00,
-        "is_anode": True,
+        "file_name": "69_life.xlsx",
+        "mass_mg": 13.44,
+        "is_anode": False,
+        "color": "#7CA5B8",
+        "label": "Cathode",
     },
 ]  # Data is an array, which means you can put run multiple data files in one go
 custom_voltage = 0  # Set voltages to be 3 for anodes
 
 show_plots = True
-save_plots = False
+save_plots = True
 num_pre_cycles = 0  # Number of precycles to remove from start
 
 #################################################
@@ -74,15 +76,16 @@ for d in data:
     # Plotting
     if show_plots:
         # voltage_time(df_record, helper_parameters, save_plots)
-        discharge_capacity(
-            is_anode,
-            df_cycle,
-            df_record,
-            mass_kg,
-            max_voltage,
-            helper_parameters,
-            save_plots,
-        )
+        # discharge_capacity(
+        #     is_anode,
+        #     df_cycle,
+        #     df_record,
+        #     mass_kg,
+        #     max_voltage,
+        #     helper_parameters,
+        #     save_plots,
+        #     label=d["label"],
+        # )
         # columbic_efficiency(df_cycle, helper_parameters, save_plots)
         # capacity_voltage(df_step, helper_parameters, save_plots)
         # current_time(df_record, helper_parameters, save_plots)

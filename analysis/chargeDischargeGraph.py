@@ -20,7 +20,7 @@ def capacity_graph(df_record, mass, helper_parameters, save_plots):
     # Plotting
     plt.clf()
     plt.xlabel("Specific Capacity (mAh/kg)")
-    plt.ylabel("Voltage (V)")
+    plt.ylabel("Voltage (V vs Na/Na+)")
     plt.title("Charge/Discharge Cycles")
     plt.grid()
 
@@ -47,7 +47,12 @@ def capacity_graph(df_record, mass, helper_parameters, save_plots):
 
     # Plotting
     if save_plots:
-        plt.savefig("graphs/capacity_voltage.png", dpi=300, bbox_inches="tight")
+        plt.savefig(
+            "graphs/capacity_voltage.png",
+            dpi=300,
+            bbox_inches="tight",
+            transparent=True,
+        )
     else:
         plt.show()
 
