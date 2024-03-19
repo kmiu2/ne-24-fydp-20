@@ -1,37 +1,39 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from helper import cut_off_record, cut_off_step
-
-cm = plt.colormaps["hsv"]
+from analysis.helper import cut_off_record, cut_off_step
 
 
-def capacity_graph(df, mass):
+def capacity_graph(
+    df_record,
+    mass,
+    helper_parameters,
+    save_plots,
+    label,
+):
     # Get data from each column
-    charge_data = df[
-        ["Capacity", "Voltage", "Step", "Step Mode", "Cycle Count"]
+    record_data = df_record[
+        ["Cycle Count", "Capacity", "Voltage", "Step", "Step Mode"]
     ].to_numpy()
 
     # Cut off pre-cycles
-    charge_data = cut_off_record(charge_data)
+    record_data = cut_off_record(record_data, helper_parameters)
 
     # Set variables
-    num_data_points = len(charge_data[:, 0])
+    num_data_points = len(record_data[:, 0])
     half_cycles = 0  # Can use cycle count for legend if need be - definitely looks cluttered with too many cycles
     cycle_data = np.zeros([1, 2])
 
-    # Subplots for linear and log scale
-    fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(12, 6))
-    fig.suptitle("Charge/Discharge Cycles")
-    ax[0].set_xlabel("Specific Capacity (mAh/kg)")
-    ax[0].set_ylabel("Voltage (V)")
-    ax[1].set_xlabel("Specific Capacity (mAh/kg)")
-    ax[1].set_ylabel("Voltage (V)")
-    ax[1].set_xscale("log")
+    # Plotting
+    plt.clf()
+    plt.xlabel("Specific Capacity (mAh/kg)")
+    plt.ylabel("Voltage (V vs Na/Na+)")
+    plt.title(f"{label} Charge/Discharge Cycles")
+    plt.grid()
 
     # Loop through each data point
     for i in range(num_data_points - 1):
-        current_cycle_type = charge_data[i, 3]
-        previous_cycle_type = charge_data[i - 1, 3]
+        current_cycle_type = record_data[i, 4]
+        previous_cycle_type = record_data[i - 1, 4]
 
         # Get data for charge/discharge cycles
         if current_cycle_type == "CCD" or current_cycle_type == "CCC":
@@ -42,26 +44,32 @@ def capacity_graph(df, mass):
 
             # Add the data point to the cycle data
             cycle_data = np.concatenate(
-                (cycle_data, [[charge_data[i, 0] / mass, charge_data[i, 1]]])
+                (cycle_data, [[record_data[i, 1] / mass, record_data[i, 2]]])
             )
 
             # If it's the last data point of the cycle, plot the cycle
-            if charge_data[i + 1, 3] != current_cycle_type:
-                ax[0].plot(cycle_data[1:, 0], cycle_data[1:, 1], color=cm(half_cycles))
-                ax[1].plot(cycle_data[1:, 0], cycle_data[1:, 1], color=cm(half_cycles))
-
-    print("Cycle count: " + str(half_cycles / 2))
+            if record_data[i + 1, 4] != current_cycle_type:
+                color = "blue" if current_cycle_type == "CCD" else "red"
+                plt.plot(cycle_data[1:, 0], cycle_data[1:, 1], color=color)
 
     # Plotting
-    plt.show()
+    if save_plots:
+        plt.savefig(
+            f"graphs/{label}_capacity_voltage.png",
+            dpi=300,
+            bbox_inches="tight",
+            transparent=False,
+        )
+    else:
+        plt.show()
 
 
-def capacity_voltage(df):
+def capacity_voltage(df, helper_parameters, save_plots, label):
     # Get data from each column
     voltage_data = df[["Step", "Mode", "StartVolt", "EndVolt"]].to_numpy()
 
     # Cut off pre-cycles
-    voltage_data = cut_off_step(voltage_data)
+    voltage_data = cut_off_step(voltage_data, helper_parameters)
 
     num_data_points = len(voltage_data[:, 0])
     lower_voltages = []
@@ -82,10 +90,17 @@ def capacity_voltage(df):
             upper_voltages.append(voltage_data[i, 2])
             lower_voltages.append(voltage_data[i, 3])
 
+    cycle_count = np.arange(1, (len(lower_voltages)) / 2 + 1, 0.5)
+
     # Plotting
-    plt.plot(lower_voltages, color="blue")
-    plt.plot(upper_voltages, color="red")
+    plt.clf()
+    plt.plot(cycle_count, lower_voltages, color="blue")
+    # plt.plot(cycle_count, upper_voltages, color="red")
     plt.xlabel("Cycle")
     plt.ylabel("Voltage (V)")
-    plt.title("Voltage vs Cycle")
-    plt.show()
+    plt.title("Voltage vs. Cycle")
+    plt.grid()
+    if save_plots:
+        plt.savefig(f"graphs/{label}_voltage_cycle.png", dpi=300, bbox_inches="tight")
+    else:
+        plt.show()

@@ -1,55 +1,65 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from helper import cut_off_record
+from analysis.helper import cut_off_record
 
 
-def voltage_time(df):
+def voltage_time(df_record, helper_parameters, save_plots, label):
     # Get data from each column
-    charge_data = df[["Voltage", "Cycle Count"]].to_numpy()
+    record_data = df_record[["Cycle Count", "Voltage"]].to_numpy()
 
     # Cut off pre-cycles
-    charge_data = cut_off_record(charge_data)
+    record_data = cut_off_record(record_data, helper_parameters)
 
-    # Remove cycle count column
-    charge_data = charge_data[:, 0]
+    # Get voltage data
+    record_data = record_data[:, 1]
 
     # Create x-axis
     time_interval = 10  # seconds
-    x = time_interval * np.arange(charge_data.size)
+    x = time_interval * np.arange(record_data.size)
 
     # Plotting
+    plt.clf()
     plt.plot(
         x,
-        charge_data,
-        color="b",
+        record_data,
+        color="#38761d",
     )
     plt.xlabel("Time (s)")
     plt.ylabel("Voltage (V)")
-    plt.title("Voltage Over Cycle Life")
-    plt.show()
+    plt.title("Voltage vs. Time")
+    plt.grid()
+    if save_plots:
+        plt.savefig(f"graphs/{label}_voltage_time.png", dpi=300, bbox_inches="tight")
+    else:
+        plt.show()
 
 
-def current_time(df):
+def current_time(df_record, helper_parameters, save_plots, label):
     # Get data from each column
-    charge_data = df[["Current", "Cycle Count"]].to_numpy()
+    record_data = df_record[["Cycle Count", "Current"]].to_numpy()
 
     # Cut off pre-cycles
-    charge_data = cut_off_record(charge_data)
+    record_data = cut_off_record(record_data, helper_parameters)
 
-    # Remove cycle count column
-    charge_data = charge_data[:, 0]
+    # Get current data
+    record_data = record_data[:, 1]
 
     # Create x-axis
     time_interval = 10  # seconds
-    x = time_interval * np.arange(charge_data.size)
+    x = time_interval * np.arange(record_data.size)
 
     # Plotting
+    plt.clf()
     plt.plot(
         x,
-        charge_data,
-        color="b",
+        record_data,
+        color="#38761d",
     )
     plt.xlabel("Time (s)")
-    plt.ylabel("Current (A)")
-    plt.title("Current Over Cycle Life")
-    plt.show()
+    plt.ylabel("Current (mA)")
+    plt.title("Current vs. Time")
+    plt.grid()
+    if save_plots:
+        plt.savefig(f"graphs/{label}_current_time.png", dpi=300, bbox_inches="tight")
+    else:
+        plt.show()
