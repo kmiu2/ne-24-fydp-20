@@ -5,17 +5,10 @@
 
 data = [
     {
-        "file_name": "51_life.xlsx",
-        "mass_mg": 1.865,
-        "is_anode": True,
-        "color": "#38761d",
-        "label": "Anode",
-    },
-    {
-        "file_name": "69_life.xlsx",
-        "mass_mg": 13.44,
+        "file_name": "63_life.xlsx",
+        "mass_mg": 14.2,
         "is_anode": False,
-        "color": "#7CA5B8",
+        "color": "#38761d",
         "label": "Cathode",
     },
 ]  # Data is an array, which means you can put run multiple data files in one go
@@ -28,12 +21,12 @@ num_pre_cycles = 0  # Number of precycles to remove from start
 #################################################
 ################### Main Code ###################
 default_helper_parameters = {
-    "remove_from_start": 1,  # Removes last incomplete cycle
-    "remove_from_end": 1,  # Removes first incomplete cycle
+    "remove_from_start": 0,  # Removes last incomplete cycleclear
+    "remove_from_end": 0,  # Removes first incomplete cycle
     "num_lifetime_cycles": 1000,
     "custom_range": False,  # If True, will use custom_start and custom_num_cycles
-    "custom_start": 2,  # Starting at cycle N
-    "custom_num_cycles": 1,  # Number of cycles to include
+    "custom_start": 3,  # Starting at cycle N
+    "custom_num_cycles": 2,  # Number of cycles to include
 }
 
 helper_parameters = default_helper_parameters
@@ -82,7 +75,7 @@ for d in data:
 
     # Plotting
     if show_plots:
-        # voltage_time(df_record, helper_parameters, save_plots)
+        voltage_time(df_record, helper_parameters, save_plots, label=d["label"])
         discharge_capacity(
             is_anode,
             df_cycle,
@@ -93,9 +86,9 @@ for d in data:
             save_plots,
             label=d["label"],
         )
-        # columbic_efficiency(df_cycle, helper_parameters, save_plots)
-        # capacity_voltage(df_step, helper_parameters, save_plots)
-        # current_time(df_record, helper_parameters, save_plots)
+        columbic_efficiency(df_cycle, helper_parameters, save_plots, label=d["label"])
+        capacity_voltage(df_step, helper_parameters, save_plots, label=d["label"])
+        current_time(df_record, helper_parameters, save_plots, label=d["label"])
         capacity_graph(
             df_record,
             mass_kg,

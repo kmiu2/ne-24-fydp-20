@@ -49,7 +49,8 @@ def capacity_graph(
 
             # If it's the last data point of the cycle, plot the cycle
             if record_data[i + 1, 4] != current_cycle_type:
-                plt.plot(cycle_data[1:, 0], cycle_data[1:, 1], color="#38761d")
+                color = "blue" if current_cycle_type == "CCD" else "red"
+                plt.plot(cycle_data[1:, 0], cycle_data[1:, 1], color=color)
 
     # Plotting
     if save_plots:
@@ -57,13 +58,13 @@ def capacity_graph(
             f"graphs/{label}_capacity_voltage.png",
             dpi=300,
             bbox_inches="tight",
-            transparent=True,
+            transparent=False,
         )
     else:
         plt.show()
 
 
-def capacity_voltage(df, helper_parameters, save_plots):
+def capacity_voltage(df, helper_parameters, save_plots, label):
     # Get data from each column
     voltage_data = df[["Step", "Mode", "StartVolt", "EndVolt"]].to_numpy()
 
@@ -100,6 +101,6 @@ def capacity_voltage(df, helper_parameters, save_plots):
     plt.title("Voltage vs. Cycle")
     plt.grid()
     if save_plots:
-        plt.savefig("graphs/voltage_cycle.png", dpi=300, bbox_inches="tight")
+        plt.savefig(f"graphs/{label}_voltage_cycle.png", dpi=300, bbox_inches="tight")
     else:
         plt.show()

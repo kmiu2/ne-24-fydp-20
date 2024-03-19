@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 from analysis.helper import cut_off_cycle
 
 
-def columbic_efficiency(df_cycle, helper_parameters, save_plots):
+def columbic_efficiency(df_cycle, helper_parameters, save_plots, label):
     # Get data from each column
     cycle_data = df_cycle[["Cycle", "CapC", "CapD", "Efficiency"]].to_numpy()
 
@@ -34,6 +34,10 @@ def columbic_efficiency(df_cycle, helper_parameters, save_plots):
     plt.title("Efficiency vs. Cycles")
     plt.grid()
     if save_plots:
-        plt.savefig("graphs/columbic_efficiency.png", dpi=300, bbox_inches="tight")
+        plt.savefig(
+            f"graphs/{label}_columbic_efficiency.png",
+            dpi=300,
+            bbox_inches="tight",
+        )
     else:
         plt.show()

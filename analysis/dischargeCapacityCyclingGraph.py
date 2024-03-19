@@ -75,14 +75,14 @@ def discharge_capacity(
     )
     plt.xlabel("Cycle Number")
     plt.ylabel(f"Gravimetric Energy Density (Wh/kg)")
-    plt.title(f"{label} Capacity vs. Cycles")
+    plt.title(f"{label} Energy Density vs. Cycles")
     plt.grid()
     if save_plots:
         plt.savefig(
             f"graphs/{label}_discharge_capacity.png",
             dpi=300,
             bbox_inches="tight",
-            transparent=True,
+            transparent=False,
         )
     else:
         plt.show()

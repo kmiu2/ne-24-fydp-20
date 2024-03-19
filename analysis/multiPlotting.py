@@ -145,7 +145,7 @@ if save_plots:
         "graphs/multi_discharge_capacity.png",
         dpi=300,
         bbox_inches="tight",
-        transparent=True,
+        transparent=False,
     )
 else:
     plt.show()
