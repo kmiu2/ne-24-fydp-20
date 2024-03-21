@@ -5,7 +5,7 @@
 
 data = [
     {
-        "file_name": "63_life.xlsx",
+        "file_name": "63_life_3_20.xlsx",
         "mass_mg": 14.2,
         "is_anode": False,
         "color": "#38761d",
@@ -21,7 +21,7 @@ num_pre_cycles = 0  # Number of precycles to remove from start
 #################################################
 ################### Main Code ###################
 default_helper_parameters = {
-    "remove_from_start": 0,  # Removes last incomplete cycleclear
+    "remove_from_start": 0,  # Removes last incomplete cycle
     "remove_from_end": 0,  # Removes first incomplete cycle
     "num_lifetime_cycles": 1000,
     "custom_range": False,  # If True, will use custom_start and custom_num_cycles
