@@ -22,10 +22,11 @@ def capacity_graph(
     num_data_points = len(record_data[:, 0])
     half_cycles = 0  # Can use cycle count for legend if need be - definitely looks cluttered with too many cycles
     cycle_data = np.zeros([1, 2])
+    mass = mass * 1000  # Convert from kg to g
 
     # Plotting
     plt.clf()
-    plt.xlabel("Specific Capacity (mAh/kg)")
+    plt.xlabel("Specific Capacity (mAh/g)")
     plt.ylabel("Voltage (V vs Na/Na+)")
     plt.title(f"{label} Charge/Discharge Cycles")
     plt.grid()
