@@ -9,8 +9,11 @@ import statistics
 #  Cathode and Anode Performance
 cathodeEnergyDensity = 85.11#statistics.mean([10.87, 12.58, 12.97]) # Wh/kg
 anodeEnergyDensity = statistics.mean([170.83, 125.44, 234.11]) # Wh/kg
+#set wether the input energy densisities for anodes and cathodes are per electrode material or include current collectors
+AnodeEDAnodeOnly = True
+CathodeEDCathodeOnly = True
 #  Cathode and Anode Film and Substrate properties
-anodeMass = 10.225  # mg - weight of the whole electrode (active material + susbstrate)
+anodeMass = 10.214  # mg - weight of the whole electrode (active material + susbstrate)
 cathodeMass = 14.2#statistics.mean([22.5, 22.1, 21.8]) # mg - weight of the whole electrode (active material + susbstrate)
 anodeSubstrateMass = 8.36 # mg - estimated weight of either the Cu or Al foil the anode is deposited on
 cathodeSubstrateMass = 0.0 # mg - estimated weight of either the Cu or Al foil the cathode is deposited on

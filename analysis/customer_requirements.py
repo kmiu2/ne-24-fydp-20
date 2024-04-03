@@ -1,6 +1,7 @@
 import numpy as np
 from analysis.helper import cut_off_cycle, cut_off_record
 from scipy.integrate import simpson
+import statistics 
 
 ## Customer Requirements
 # Primary:
@@ -41,12 +42,14 @@ def print_customer_requirements(
     # - Loop through all entries
     # - Take the larger of CapC and CapD as the denominator
     # - Average to get the coulombic efficiency
+    cycleCaps = []
     adjusted_efficiencies = []
     for cycle in cycle_data:
         capC = cycle[1]
         capD = cycle[2]
         adjusted_efficiency = min(capC, capD) / max(capC, capD)
         adjusted_efficiencies.append(adjusted_efficiency)
+        cycleCaps.append(min(capC, capD))
     avg_coulombic_efficiency = np.mean(adjusted_efficiencies) * 100
 
     # - Since: Remaining Capacity = Efficiency ^ Cycles
@@ -121,7 +124,7 @@ def print_customer_requirements(
     print(f"Avg Energy Efficiency: {(np.mean(energy_efficiencies)*100):.2f}%")
 
     if is_anode:
-        wh_cycle_data = np.array(cycle[1]) * voltage / 1000
+        wh_cycle_data = statistics.mean(cycleCaps) * voltage / 1000
         gravimetric_energy_density = wh_cycle_data / mass
         print(
             f"\nMax Gravimetric Energy Density: {np.max(gravimetric_energy_density):.2f} Wh/kg"

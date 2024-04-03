@@ -5,11 +5,11 @@
 
 data = [
     {
-        "file_name": "51_life.xlsx",
-        "mass_mg": 14.2,
-        "is_anode": False,
+        "file_name": "61_life.xlsx",
+        "mass_mg": 2.04,
+        "is_anode": True,
         "color": "#38761d",
-        "label": "Cathode",
+        "label": "Anode",
     },
 ]  # Data is an array, which means you can put run multiple data files in one go
 custom_voltage = 0  # Set voltages to be 3 for anodes
@@ -24,9 +24,9 @@ default_helper_parameters = {
     "remove_from_start": 1,  # Removes last incomplete cycle
     "remove_from_end": 1,  # Removes first incomplete cycle
     "num_lifetime_cycles": 1000,
-    "custom_range": False,  # If True, will use custom_start and custom_num_cycles
-    "custom_start": 3,  # Starting at cycle N
-    "custom_num_cycles": 2,  # Number of cycles to include
+    "custom_range": True,  # If True, will use custom_start and custom_num_cycles
+    "custom_start": 7,  # Starting at cycle N
+    "custom_num_cycles": 14,  # Number of cycles to include
 }
 
 helper_parameters = default_helper_parameters
