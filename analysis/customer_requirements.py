@@ -115,7 +115,7 @@ def print_customer_requirements(
         charge_rates.append(charge_rate)
 
         # Energy Density = Energy / Mass
-        discharge_energy_density = energy_ccd / mass
+        discharge_energy_density = min(energy_ccd, energy_ccc) / mass
         discharge_energy_densities.append(discharge_energy_density)
 
     print(f"\nMax Charge Rate: {np.max(charge_rates):.4f} W")

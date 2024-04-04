@@ -10,8 +10,8 @@ import statistics
 cathodeEnergyDensity = 85.11#statistics.mean([10.87, 12.58, 12.97]) # Wh/kg
 anodeEnergyDensity = statistics.mean([170.83, 125.44, 234.11]) # Wh/kg
 #set wether the input energy densisities for anodes and cathodes are per electrode material or include current collectors
-AnodeEDAnodeOnly = True
-CathodeEDCathodeOnly = True
+AnodeEDAnodeOnly = False
+CathodeEDCathodeOnly = False
 #  Cathode and Anode Film and Substrate properties
 anodeMass = 10.214  # mg - weight of the whole electrode (active material + susbstrate)
 cathodeMass = 14.2#statistics.mean([22.5, 22.1, 21.8]) # mg - weight of the whole electrode (active material + susbstrate)
@@ -32,9 +32,9 @@ PBAinCathode = 0.475 # weight fraction to total solids
 TritonXinCathode = 0.01 # v% in solution
 CathodeSolnVolume = 15 # mL volume total of liquids
 #   Alternative Cathode Performance Parameters for full cell performance
-CathActEnergyDensityAlt  = 157/0.7 # Wh/kg, alternative active material energy density to be used
-CathActR = 0.97 # weight fraction active material
-condcFillerR = 0.02 # weight fraction conductive filler
+CathActEnergyDensityAlt  = 261.7 # Wh/kg, alternative active material energy density to be used
+CathActR = 0.45 # weight fraction active material
+condcFillerR = 0.1 # weight fraction conductive filler
 
 
 
@@ -75,16 +75,28 @@ CurrentCollectorThick = 0.0006 # cm
 SeparatorThick = 0.002 # cm
 ElectrolytePerUnitArea = 0.075 # mL/cm^2 : this is ~3x what we use in a coin cell to be generous
 
-
-
+AnodeActEnergyDensity = 0
+CathActEnergyDensity = 0
 #Performing Calculations
-# extrapolating cathode performance
-CathActEnergyDensity = cathodeEnergyDensity * cathodeMass / ((cathodeMass - cathodeSubstrateMass) * cathodeActiveMaterial)
+if AnodeEDAnodeOnly:
+    #if already given as anode energy density update the active material energy denisty
+    AnodeActEnergyDensity = anodeEnergyDensity
+else:
+    # finding the anode energy density of active material without the substrate added
+    AnodeActEnergyDensity = anodeEnergyDensity * anodeMass / (anodeMass - anodeSubstrateMass)
+
+
+if CathodeEDCathodeOnly:
+    #if already given as anode energy density update the active material energy denisty by dividing by active material ratio
+    CathActEnergyDensity = cathodeEnergyDensity / cathodeActiveMaterial
+else:
+    # extrapolating cathode performance if given as a energy density including substrate
+    CathActEnergyDensity = cathodeEnergyDensity * cathodeMass / ((cathodeMass - cathodeSubstrateMass) * cathodeActiveMaterial)
+#extrapolate cathode material performance at 90 and 97 % active material
 Cath90ActDensity = CathActEnergyDensity * 0.9
 Cath97ActDensity = CathActEnergyDensity * 0.97
-# finding the anode energy density of active material
-AnodeActEnergyDensity = anodeEnergyDensity * anodeMass / (anodeMass - anodeSubstrateMass)
-
+    
+    
 # Determine average densities of anode and cathode
 AnodeDensity = carbonBlackDensity*0.8 + NaCMCsDensity*0.2
 CathodeDensity = PBADensity*CathActR + rGODensity*condcFillerR + (1-CathActR-condcFillerR)*NaCMCsDensity
