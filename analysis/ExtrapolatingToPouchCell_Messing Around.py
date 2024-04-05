@@ -7,11 +7,11 @@ Created on Tue Mar  5 13:12:46 2024
 import statistics
 # input parameters based on the test battery
 #  Cathode and Anode Performance
-cathodeEnergyDensity = 85.11#statistics.mean([10.87, 12.58, 12.97]) # Wh/kg
-anodeEnergyDensity = statistics.mean([170.83, 125.44, 234.11]) # Wh/kg
+cathodeEnergyDensity = 83 #statistics.mean([10.87, 12.58, 12.97]) # Wh/kg
+anodeEnergyDensity = 1380 # Wh/kg
 #set wether the input energy densisities for anodes and cathodes are per electrode material or include current collectors
-AnodeEDAnodeOnly = False
-CathodeEDCathodeOnly = False
+AnodeEDAnodeOnly = True
+CathodeEDCathodeOnly = True
 #  Cathode and Anode Film and Substrate properties
 anodeMass = 10.214  # mg - weight of the whole electrode (active material + susbstrate)
 cathodeMass = 14.2#statistics.mean([22.5, 22.1, 21.8]) # mg - weight of the whole electrode (active material + susbstrate)
